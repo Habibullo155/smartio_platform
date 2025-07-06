@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>SMARTIO - Управление Бизнесом, Склад, Интернет-магазин, Маркетплейсы</title>
+  <meta content="SMARTIO предлагает инновационные SaaS-решения для эффективного управления складом, онлайн-продажами и интеграцией с популярными маркетплейсами. Оптимизируйте свой бизнес с нами." name="description">
+  <meta content="SMARTIO, управление складом, интернет-магазин, маркетплейсы, SaaS, бизнес, автоматизация, CRM, ERP, учет, продажи, логистика" name="keywords">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta content="SmartIO" name="Simorgh">
+
+  <!-- SEO Meta Tags -->
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.your-smartio-domain.com/"> {# Замените на реальный домен вашего сайта #}
+
+  <!-- Open Graph / Facebook / LinkedIn -->
+  <meta property="og:title" content="SMARTIO - Управление Бизнесом, Склад, Интернет-магазин, Маркетплейсы">
+  <meta property="og:description" content="SMARTIO предлагает инновационные SaaS-решения для эффективного управления складом, онлайн-продажами и интеграцией с популярными маркетплейсами. Оптимизируйте свой бизнес с нами.">
+  <meta property="og:image" content="https://www.your-smartio-domain.com/static/images/og-image.jpg"> {# Замените на URL изображения для предпросмотра #}
+  <meta property="og:url" content="https://www.your-smartio-domain.com/"> {# Замените на реальный домен вашего сайта #}
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@YourSmartioTwitterHandle"> {# Замените на ваш Twitter-аккаунт #}
+  <meta name="twitter:title" content="SMARTIO - Управление Бизнесом, Склад, Интернет-магазин, Маркетплейсы">
+  <meta name="twitter:description" content="SMARTIO предлагает инновационные SaaS-решения для эффективного управления складом, онлайн-продажами и интеграцией с популярными маркетплейсами. Оптимизируйте свой бизнес с нами.">
+  <meta name="twitter:image" content="https://www.your-smartio-domain.com/static/images/twitter-image.jpg"> {# Замените на URL изображения для предпросмотра в Twitter #}
+
+  <!-- Favicons -->
+  <link href="{{ url_for('static', path='images/favicon.png') }}" rel="icon">
+  <link href="{{ url_for('static', path='images/apple-touch-icon.png') }}" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&amp;display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{{ url_for('static', path='vendor/aos/aos.css') }}" rel="stylesheet">
+  <!-- Font Awesome CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="{{ url_for('static', path='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', path='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', path='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', path='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{{ url_for('static', path='stylesheets/styles.css') }}" rel="stylesheet">
+
+  <style>
+    /* Дополнительные стили для секции цен */
+    .pricing .card {
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.08);
+        transition: 0.3s;
+        height: 100%; /* Ensure cards are same height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .pricing .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.15);
+    }
+    .pricing .card .title {
+        font-weight: 700;
+        margin-bottom: 15px;
+        font-size: 20px;
+        color: #007bff;
+    }
+    .pricing .card .price {
+        font-size: 36px;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .pricing .card .price sup {
+        font-size: 20px;
+        top: -15px;
+    }
+    .pricing .card .price span {
+        font-size: 16px;
+        font-weight: 400;
+        color: #666;
+    }
+    .pricing .card .option ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .pricing .card .option ul li {
+        padding: 8px 0;
+        color: #555;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+    }
+    .pricing .card .option ul li i {
+        font-size: 18px;
+        padding-right: 8px;
+        color: #28a745; /* Green checkmark */
+    }
+    .pricing .card .btn-buy {
+        display: inline-block;
+        padding: 10px 30px;
+        border-radius: 5px;
+        color: #fff;
+        background: #007bff;
+        font-size: 16px;
+        font-weight: 600;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+    .pricing .card .btn-buy:hover {
+        background: #0056b3;
+    }
+    /* Удалены стили для .period-select-container и .period-discount-info */
+    /* Дополнительные стили для секций Блога и Планов */
+    .blog-item, .plan-item {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+    .blog-item:hover, .plan-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .blog-item img, .plan-item img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-bottom: 1px solid #eee;
+    }
+    .blog-content, .plan-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .blog-content h3, .plan-content h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #007bff; /* Primary color */
+    }
+    .plan-content h3 {
+        color: #28a745; /* Green for plans */
+    }
+    .blog-content p, .plan-content p {
+        font-size: 0.95rem;
+        color: #555;
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        flex-grow: 1;
+    }
+    .blog-meta, .plan-meta {
+        font-size: 0.85rem;
+        color: #777;
+        margin-top: 1rem;
+        border-top: 1px solid #eee;
+        padding-top: 1rem;
+    }
+    .read-more-btn, .learn-more-btn {
+        display: inline-block;
+        background-color: #007bff;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        align-self: flex-start;
+        margin-top: 1rem;
+    }
+    .learn-more-btn {
+        background-color: #28a745; /* Green for plans */
+    }
+    .read-more-btn:hover {
+        background-color: #0056b3;
+    }
+    .learn-more-btn:hover {
+        background-color: #218838;
+    }
+    .section-header {
+      text-align: center;
+      padding-bottom: 30px;
+    }
+    .section-header h2 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    .section-header p {
+      font-size: 16px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center sticked stikcy-menu">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+        <img src="{{ url_for('static', path='images/logo.png') }}" alt="SMARTIO logo">
+      </a>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="/" class="active">Главная</a></li>
+          <li><a href="#services" class="">Услуги</a></li>
+          <li><a href="#portfolio" class="">Портфолио</a></li>
+          <li><a href="#testimonials" class="">Отзывы</a></li>
+          <li><a href="#team" class="">Команда</a></li>
+          <li class="dropdown"><a href="#"><span>Меню</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="#about">О нас</a></li>
+              <li><a href="#pricing">Тарифы</a></li>
+              <li><a href="#faq">Вопросы</a></li>
+              <li><a href="#privacy-policy">Условия</a></li>
+              <li><a href="#privacy-policy">Политика конфиденциальности</a></li>
+              <li><a href="#recent-posts">Блог</a></li> {# Теперь ссылка на секцию на этой же странице #}
+              <li><a href="#our-plans">Наши Планы</a></li> {# Новая ссылка на секцию на этой же странице #}
+            </ul>
+          </li>
+          <li><a href="#recent-posts">Новости</a></li> {# Теперь ссылка на секцию на этой же странице #}
+        </ul>
+      </nav>
+      <!-- .navbar -->
+      <button id="darkmode-button"><i class="fa-solid fa-moon"></i></button>
+      <a href="/login" class="btn-get-started hide-on-mobile">Вход</a>
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+    </div>
+  </header>
+  <!-- End Header -->
+
+  <!--  Hero Section  -->
+  <section id="hero" class="hero sticked-header-offset">
+
+    <div id="particles-js"></div>
+    <div id="repulse-circle-div"></div>
+    <div class="container position-relative">
+      <div class="row gy-5 aos-init aos-animate">
+        <div class="col-lg-7 offset-lg-5 dark-bg order-lg-1 d-flex flex-column justify-content-start text-left caption">
+          <h1 data-aos="fade-up">Управляйте своим бизнесом <br><span>с умом и легкостью</span><span class="circle" data-aos="fade-right" data-aos-delay="800">.</span></h1>
+          <p data-aos="fade-up" data-aos-delay="400">Инновационные решения для эффективного управления складом, онлайн-продажами и маркетплейсами. Легко настраивается и оптимизирована для SEO.</p>
+          <div class="social" data-aos="fade-up" data-aos-delay="600">
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+          <div class="d-flex justify-content-start">
+            <a href="#contact" class="btn-get-started mr-20" data-aos="fade-up" data-aos-delay="800">Свяжитесь с нами</a>
+            <a href="#pricing" class="btn-get-started" data-aos="fade-up" data-aos-delay="1000">Начать</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Hero Section -->
+
+  <main id="main">
+        <!-- Start Service Section -->
+        <div id="services" class="section">
+          <div class="top-icon-box position-relative">
+            <div class="container position-relative">
+              <div class="row gy-4">
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="100">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-warehouse"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">Управление Складом</a></h2>
+                    <p>Полный контроль над товарными запасами, приходами, расходами и остатками.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="200">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-store"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">Интернет-магазин</a></h2>
+                    <p>Создание и управление собственным онлайн-магазином с готовыми шаблонами.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="500">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-exchange-alt"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">Интеграция с Маркетплейсами</a></h2>
+                    <p>Синхронизация продаж и данных с ведущими онлайн-площадками.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="100">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-search"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">SEO Оптимизация</a></h2>
+                    <p>Повышение видимости вашего интернет-магазина в поисковых системах.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="200">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-chart-bar"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">Отчетность и Аналитика</a></h2>
+                    <p>Подробная статистика продаж, движений товаров и финансов для принятия решений.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+
+                <div class="col-xl-4 col-md-4" data-aos="fade-up" data-aos-delay="500">
+                  <div class="icon-box">
+                    <div class="icon"><i class="fas fa-users"></i></div>
+                    <h2 class="title"><a href="#" class="stretched-link">Управление Персоналом</a></h2>
+                    <p>Контроль за сотрудниками, зарплатами, авансами и их активностью.</p>
+                  </div>
+                </div>
+                <!--End Icon Box -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Service Section -->
+
+        <!-- Featured -->
+        <section>
+          <div class="container" id="featured">
+              <div class="section-header" data-aos="fade-up" data-aos-delay="100">
+                <h2>Почему выбирают нас</h2>
+                <p>Ваш успех — наш приоритет</p>
+              </div>
+          <div class="row">
+            <!-- start  left -->
+            <div class="col-md-4 left">
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="100">
+                <div class="description">
+                  <h3>Опыт</h3>
+                  <p>Наши эксперты обладают многолетним опытом в автоматизации бизнес-процессов.</p>
+                </div>
+                  <div class="icon">
+                    <i class="fas fa-award"></i></div>
+              </div>
+
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="400">
+                <div class="description">
+                  <h3>Продукты</h3>
+                  <p>Полный набор инструментов для комплексного управления вашим бизнесом.</p>
+                </div>
+                  <div class="icon">
+                    <i class="fas fa-boxes"></i></div>
+            </div>
+
+
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="500">
+                <div class="description">
+                  <h3>Индивидуальный Подход</h3>
+                  <p>Мы адаптируем решения под уникальные потребности вашего бизнеса.</p>
+                </div>
+                <div class="icon">
+                  <i class="fas fa-handshake"></i></div>
+              </div>
+            </div>
+            <!-- end  left -->
+
+            <!-- start  center -->
+            <div class="col-md-4 p-4 p-sm-5 center">
+              <div class="list-center-wrap" data-aos="fade-up" data-aos-delay="100">
+                <div class="center-icon">
+                  <img src="{{ url_for('static', path='images/features.jpg') }}" alt="features image"></div>
+              </div>
+            </div>
+            <!-- end  center -->
+            <!-- start  right -->
+            <div class="col-md-4 right">
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="100">
+                <div class="icon">
+                  <i class="fas fa-dollar-sign"></i></div>
+                <div class="description">
+                  <h3>Доступные Цены</h3>
+                  <p>Выгодные тарифы и прозрачная ценовая политика без скрытых платежей.</p>
+                </div>
+            </div>
+
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="200">
+                <div class="icon">
+                  <i class="fas fa-rocket"></i></div>
+                <div class="description">
+                  <h3>Быстрое Развертывание</h3>
+                  <p>Ваш бизнес-портал будет готов к работе в кратчайшие сроки.</p>
+                </div>
+              </div>
+
+
+              <div class="list-wrap" data-aos="fade-up" data-aos-delay="500">
+                <div class="description">
+                  <h3>Круглосуточная Поддержка</h3>
+                  <p>Наша команда всегда на связи, чтобы помочь вам в любое время.</p>
+                </div>
+              </div>
+            </div>
+            <!-- end  right -->
+          </div>
+        </div>
+    </section>
+    <!-- Featured -->
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Наши Проекты</h2>
+          <p>Примеры наших успешных решений</p>
+        </div>
+        <div class="portfolio-isotope" data-portfolio-filter="*" data-portfolio-layout="masonry" data-portfolio-sort="original-order" data-aos="fade-up" data-aos-delay="100">
+          <div>
+            <ul class="portfolio-flters">
+              <li data-filter="*" class="filter-active">Все</li>
+              <li data-filter=".filter-app">Дизайн Приложений</li>
+              <li data-filter=".filter-product">Разработка Приложений</li>
+              <li data-filter=".filter-branding">Брендинг</li>
+              <li data-filter=".filter-books">IT-Решения</li>
+            </ul><!-- End Portfolio Filters -->
+          </div>
+
+          <div class="row gy-4 portfolio-container">
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-1.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-1.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-product">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-2.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-2.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-3.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-3.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-books">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-4.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-4.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-app">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-5.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-5.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+
+            <div class="col-xl-4 col-md-6 portfolio-item filter-branding">
+              <div class="portfolio-wrap">
+                <a href="{{ url_for('static', path='images/portfolio/product-6.jpg') }}" data-gallery="portfolio-gallery-app" class="glightbox"><img src="{{ url_for('static', path='images/portfolio/product-6.jpg') }}" class="img-fluid" alt=""></a>
+              </div>
+            </div><!-- End Portfolio Item -->
+          </div><!-- End Portfolio Container -->
+
+        </div>
+
+      </div>
+    </section>
+    <!-- End Portfolio Section -->
+
+    <!-- Start Pricing Section -->
+    <div class="pricing section" id="pricing">
+      <div class="container-fluid">
+        <div class="container">
+          <div class="section-header">
+            <h2>Наши Тарифные Планы</h2>
+            <p>Выберите подходящий план для вашего бизнеса</p>
+          </div>
+          <div class="row">
+            {# Динамическая генерация карточек подписок #}
+            {% for sub_type in subscription_types %}
+            <div class="col-lg-4">
+              <div class="card text-center">
+                <div class="title">
+                  <h2>{{ sub_type.name }}</h2>
+                </div>
+                <div class="price">
+                  {# Отображаем базовую цену и скидку из SubscriptionType #}
+                  <h4 id="price-{{ sub_type.id }}">
+                    <sup>$</sup>{{ "%.2f"|format(sub_type.price) }}
+                  </h4>
+                  <span class="period-text">/месяц</span>
+                </div>
+                {% if sub_type.discount > 0 %}
+                    <p class="discount-text">
+                        <span class="original-price">${{ "%.2f"|format(sub_type.price / (1 - sub_type.discount/100)) }}</span>
+                        (Скидка {{ sub_type.discount }}%)
+                    </p>
+                {% endif %}
+                <div class="option">
+                  <ul>
+                    {# Используем поле options #}
+                    {% for option in sub_type.options %}
+                        <li><i class="fas fa-check-circle" aria-hidden="true"></i> {{ option }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+
+                <a href="/register?subscription_type_id={{ sub_type.id }}" class="btn-buy">Заказать</a>
+              </div>
+            </div>
+            {% endfor %}
+            {# Конец динамической генерации #}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Pricing Section -->
+
+    <!-- Recent Posts Section (Блог) -->
+    <section id="recent-posts" class="recent-posts sections-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Наш Блог</h2>
+          <p>Последние новости и полезные статьи</p>
+        </div>
+
+        <div class="row gy-4">
+          {% if blog_posts %}
+            {% for post in blog_posts %}
+            <div class="col-xl-4 col-md-6">
+              <article class="blog-item"> {# Добавлен класс blog-item #}
+                <div class="post-img">
+                  <img src="{{ post.image_url or 'https://placehold.co/600x400/E0E7FF/4F46E5?text=SMARTIO+Blog' }}" alt="" class="img-fluid">
+                </div>
+                <div class="blog-content"> {# Добавлен класс blog-content #}
+                  <p class="post-category">{{ post.author.username if post.author else 'Администратор' }}</p>
+                  <h3 class="title">
+                    <a href="/blogs/{{ post.id }}">{{ post.title }}</a>
+                  </h3>
+                  <p>{{ post.short_description or post.content[:150] ~ '...' }}</p> {# Добавлено краткое описание #}
+                  <div class="blog-meta"> {# Добавлен класс blog-meta #}
+                    <p class="post-date">
+                      <time datetime="{{ post.published_at.isoformat() }}">{{ post.published_at.strftime('%d.%m.%Y') }}</time>
+                    </p>
+                  </div>
+                  <a href="/blogs/{{ post.id }}" class="read-more-btn">Читать далее</a> {# Добавлен класс read-more-btn #}
+                </div>
+              </article>
+            </div><!-- End post list item -->
+            {% endfor %}
+          {% else %}
+            <div class="col-12 text-center">
+              <p>Пока нет опубликованных статей блога.</p>
+            </div>
+          {% endif %}
+        </div><!-- End recent posts list -->
+
+        {% if blog_posts|length > 0 %}
+        <div class="text-center mt-5">
+            <a href="/blogs" class="btn btn-primary">Посмотреть все статьи</a> {# Ссылка на отдельную страницу со всеми статьями #}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    <!-- End Recent Posts Section -->
+
+    <!-- Our Future Plans Section -->
+    <section id="our-plans" class="our-plans sections-bg">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Наши Будущие Планы</h2>
+          <p>Что мы готовим для вас</p>
+        </div>
+
+        <div class="row gy-4">
+          {% if future_plans %}
+            {% for plan in future_plans %}
+            <div class="col-xl-4 col-md-6">
+              <div class="plan-item">
+                <img src="{{ plan.image_url or 'https://placehold.co/600x400/D1FAE5/10B981?text=SMARTIO+Plan' }}" alt="" class="img-fluid">
+                <div class="plan-content">
+                  <h3 class="title">
+                    <a href="/future-plans/{{ plan.id }}">{{ plan.title }}</a>
+                  </h3>
+                  <p>{{ plan.short_description }}</p>
+                  <div class="plan-meta">
+                    {% if plan.target_date %}
+                    Целевая дата: {{ plan.target_date.strftime('%d.%m.%Y') }}
+                    {% else %}
+                    Целевая дата: Не указана
+                    {% endif %}
+                  </div>
+                  <a href="/future-plans/{{ plan.id }}" class="learn-more-btn">Узнать больше</a>
+                </div>
+              </div>
+            </div><!-- End plan item -->
+            {% endfor %}
+          {% else %}
+            <div class="col-12 text-center">
+              <p>Пока нет активных будущих планов.</p>
+            </div>
+          {% endif %}
+        </div><!-- End future plans list -->
+
+        {% if future_plans|length > 0 %}
+        <div class="text-center mt-5">
+            <a href="/future-plans" class="btn btn-primary">Посмотреть все планы</a> {# Ссылка на отдельную страницу со всеми планами #}
+        </div>
+        {% endif %}
+      </div>
+    </section>
+    <!-- End Our Future Plans Section -->
+
+
+    <!--  Testimonials Section  -->
+    <section id="testimonials" class="testimonials">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Отзывы Клиентов</h2>
+          <p>Что говорят о нас наши клиенты</p>
+        </div>
+
+        <div class="slides-3 swiper" data-aos="fade-up" data-aos-delay="100">
+          <div class="swiper-wrapper">
+
+            <div class="swiper-slide">
+              <div class="testimonial-wrap">
+                <div class="testimonial-item">
+                  <div class="d-flex align-items-center info-box">
+                    <img src="{{ url_for('static', path='images/testimonials/testimonial-1.jpg') }}" class="testimonial-img flex-shrink-0"
+                      alt="">
+                    <div>
+                      <h3>Иван Петров</h3>
+                      <h4>Директор</h4>
+                      <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                          class="fas fa-star"></i><i class="fas fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                    <i class="fas fa-quote-left quote-icon-left"></i>
+                    SMARTIO преобразил наш складской учет! Все процессы стали прозрачными и управляемыми. Рекомендую!
+                    <i class="fas fa-quote-right quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-wrap">
+                <div class="testimonial-item">
+                  <div class="d-flex align-items-center info-box">
+                    <img src="{{ url_for('static', path='images/testimonials/testimonial-2.jpg') }}" class="testimonial-img flex-shrink-0"
+                      alt="">
+                    <div>
+                      <h3>Анна Смирнова</h3>
+                      <h4>Владелец интернет-магазина</h4>
+                      <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                          class="fas fa-star"></i><i class="fas fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                    <i class="fas fa-quote-left quote-icon-left"></i>
+                    Благодаря SMARTIO наш онлайн-магазин запущен всего за несколько дней. Простой и мощный инструмент!
+                    <i class="fas fa-quote-right quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-wrap">
+                <div class="testimonial-item">
+                  <div class="d-flex align-items-center info-box">
+                    <img src="{{ url_for('static', path='images/testimonials/testimonial-3.jpg') }}" class="testimonial-img flex-shrink-0"
+                      alt="">
+                    <div>
+                      <h3>Елена Ковалева</h3>
+                      <h4>Менеджер по продажам</h4>
+                      <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                          class="fas fa-star"></i><i class="fas fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                    <i class="fas fa-quote-left quote-icon-left"></i>
+                    Интеграция с маркетплейсами упростила нашу работу в разы. Теперь все продажи в одном месте.
+                    <i class="fas fa-quote-right quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+
+            <div class="swiper-slide">
+              <div class="testimonial-wrap">
+                <div class="testimonial-item">
+                  <div class="d-flex align-items-center info-box">
+                    <img src="{{ url_for('static', path='images/testimonials/testimonial-4.jpg') }}" class="testimonial-img flex-shrink-0"
+                      alt="">
+                    <div>
+                      <h3>Александр Соколов</h3>
+                      <h4>Предприниматель</h4>
+                      <div class="stars">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                          class="fas fa-star"></i><i class="fas fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                    <i class="fas fa-quote-left quote-icon-left"></i>
+                    Гибкая система прав доступа и удобный чат с сотрудниками - то, что нужно для растущего бизнеса.
+                    <i class="fas fa-quote-right quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+    <!-- End Testimonials Section -->
+
+    <!--  Start Counter Section  -->
+    <div id="stats-counter" class="call-to-action stats-counter section">
+      <div class="container" data-aos="fade-up">
+        <div class="row gy-4 align-items-center">
+          <div class="col-lg-4">
+            <div class="stats-item d-flex flex-column align-items-center">
+              <div class="icon circle"><i class="fas fa-smile"></i></div>
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <p><span>Довольных Клиентов</span></p>
+            </div><!-- End Stats Item -->
+            </div>
+            <div class="col-lg-4">
+            <div class="stats-item d-flex flex-column align-items-center">
+              <div class="icon circle"><i class="fas fa-clipboard-check"></i></div>
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <p><span>Завершенных Проектов</span></p>
+            </div><!-- End Stats Item -->
+            </div>
+            <div class="col-lg-4">
+            <div class="stats-item d-flex flex-column align-items-center">
+              <div class="icon circle"><i class="fas fa-headset"></i></div>
+              <span data-purecounter-start="0" data-purecounter-end="453" data-purecounter-duration="1" class="purecounter"></span>
+              <p><span>Часов Поддержки</span></p>
+            </div><!-- End Stats Item -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  End Counter Section  -->
+
+    <!--  Clients Section  -->
+    <div id="clients" class="clients section">
+      <div class="container" data-aos="zoom-out">
+
+        <div class="clients-slider swiper">
+          <div class="swiper-wrapper align-items-center">
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-1.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-2.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-3.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-4.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-5.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-6.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-7.png') }}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{{ url_for('static', path='images/clients/client-8.png') }}" class="img-fluid" alt=""></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- End Clients Section -->
+
+
+    <!--  Our Team Section  -->
+    <section id="team" class="team sections-bg">
+      <div class="container aos-init aos-animate" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>Наша Команда</h2>
+          <p>Эксперты, стоящие за вашим успехом</p>
+        </div>
+
+        <div class="row gy-4">
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate" data-aos="fade-up" data-aos-delay="100">
+            <div class="member">
+              <img src="{{ url_for('static', path='images/team/team-1.jpg') }}" class="img-fluid" alt="">
+              <h4>Имя Фамилия</h4>
+              <span>Руководитель проекта</span>
+              <div class="social">
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate" data-aos="fade-up" data-aos-delay="200">
+            <div class="member">
+              <img src="{{ url_for('static', path='images/team/team-2.jpg') }}" class="img-fluid" alt="">
+              <h4>Имя Фамилия</h4>
+              <span>Менеджер по продажам</span>
+              <div class="social">
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a></div></div>
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate" data-aos="fade-up" data-aos-delay="300">
+            <div class="member">
+              <img src="{{ url_for('static', path='images/team/team-3.jpg') }}" class="img-fluid" alt="">
+              <h4>Имя Фамилия</h4>
+              <span>Разработчик</span>
+              <div class="social">
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          <div class="col-xl-3 col-md-6 d-flex aos-init aos-animate" data-aos="fade-up" data-aos-delay="400">
+            <div class="member">
+              <img src="{{ url_for('static', path='images/team/team-4.jpg') }}" class="img-fluid" alt="">
+              <h4>Имя Фамилия</h4>
+              <span>Специалист по поддержке</span>
+              <div class="social">
+                <a href=""><i class="fab fa-twitter"></i></a>
+                <a href=""><i class="fab fa-facebook-f"></i></a>
+                <a href=""><i class="fab fa-linkedin-in"></i></a>
+                <a href=""><i class="fab fa-instagram"></i></a>
+              </div>
+            </div>
+          </div><!-- End Team Member -->
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End Our Team Section -->
+
+
+    <!--  Frequently Asked Questions Section  -->
+    <section id="faq" class="faq">
+      <div class="container" data-aos="fade-up">
+        <div class="section-header">
+          <h2>Часто Задаваемые Вопросы</h2>
+          <p>Ответы на популярные вопросы</p>
+        </div>
+        <div class="row gy-4">
+          <div class="col-lg-12">
+            <div class="accordion accordion-flush" id="faqlist" data-aos="fade-up" data-aos-delay="100">
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-1">
+                    <span class="num"><i class="fas fa-arrow-circle-right"></i></span> Что такое SMARTIO и как оно поможет моему бизнесу?
+                  </button>
+                </h3>
+                <div id="faq-content-1" class="accordion-collapse collapse show" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    SMARTIO - это комплексная платформа для управления бизнесом, предлагающая решения для складского учета, онлайн-продаж, интеграции с маркетплейсами и управления персоналом. Она поможет вам автоматизировать рутинные задачи, оптимизировать процессы и увеличить прибыль.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-2">
+                    <span class="num"><i class="fas fa-arrow-circle-right"></i></span>
+                    Какие типы подписок доступны и чем они отличаются?
+                  </button>
+                </h3>
+                <div id="faq-content-2" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    Мы предлагаем несколько типов подписок: "Склад" (для базового учета), "Склад и интернет-магазин" (с возможностью создания своего онлайн-магазина), "Склад и маркетплейсы" (с интеграцией с внешними площадками), и "Премиум" (все включено). Детали каждого плана можно найти в разделе "Тарифы" выше.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-3">
+                    <span class="num"><i class="fas fa-arrow-circle-right"></i></span>
+                    Могу ли я подключить свой существующий интернет-магазин к SMARTIO?
+                  </button>
+                </h3>
+                <div id="faq-content-3" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    Да, SMARTIO спроектирован с учетом гибкости. Вы можете использовать наши готовые шаблоны для создания нового магазина или интегрировать существующий, чтобы централизовать управление запасами и заказами. Свяжитесь с нашей поддержкой для получения дополнительной информации.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+
+              <div class="accordion-item">
+                <h3 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq-content-4">
+                    <span class="num"><i class="fas fa-arrow-circle-right"></i></span>
+                    Как происходит поддержка клиентов?
+                  </button>
+                </h3>
+                <div id="faq-content-4" class="accordion-collapse collapse" data-bs-parent="#faqlist">
+                  <div class="accordion-body">
+                    Мы предоставляем круглосуточную техническую поддержку для всех наших клиентов. Вы можете связаться с нами через форму обратной связи, по телефону или электронной почте. Наши специалисты готовы помочь с любыми вопросами и проблемами.
+                  </div>
+                </div>
+              </div><!-- # Faq item-->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End Frequently Asked Questions Section -->
+
+
+    <!--  Call To Action Section  -->
+    <section id="call-to-action" class="call-to-action">
+      <div class="container text-center aos-init aos-animate" data-aos="zoom-out">
+         <div class="row gy-4">
+          <div class="col-lg-12">
+              <h2>Обсудим ваш проект?</h2>
+              <p>Мы гордимся нашей способностью выполнять и достигать результатов. Используйте форму ниже, чтобы обсудить потребности вашего проекта с нашей командой, мы свяжемся с вами как можно скорее.</p>
+              <a class="cta-btn" href="mailto:info@example.com">Связаться с нами</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Call To Action Section -->
+
+
+    <!-- Start Contact Section -->
+    <div id="contact" class="contact-section section">
+      <div class="section-header">
+        <h2>Связаться с нами</h2>
+        <p>Мы всегда рады помочь</p>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-12" data-aos="fade-right">
+            <div class="contact-information-box-3">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="single-contact-info-box">
+                    <div class="contact-info">
+                      <h6>Адрес:</h6>
+                      <p>101 Ваш Город</p>
+                      <p>Ваша Улица, 12345, Ваша Страна</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="single-contact-info-box">
+                    <div class="contact-info">
+                      <h6>Телефон:</h6>
+                      <p>+1 1234 56 789</p>
+                      <p>+1 1234 56 780</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="single-contact-info-box">
+                    <div class="contact-info">
+                      <h6>Email:</h6>
+                      <p>info@smartio.com</p>
+                      <p>support@smartio.com</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-8 col-md-12" data-aos="fade-left">
+            <div class="contact-form-box contact-form contact-form-3">
+              <div class="form-container-box">
+                <form class="contact-form form" id="ajax-contact" method="post" action="{{ url_for('static', path='phpscripts/contact.php') }}">
+                  <div class="controls">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group form-input-box">
+                          <input type="text" class="form-control" id="name" name="name" placeholder="Имя*"
+                            required="required" data-error="Требуется имя.">
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group form-input-box">
+                          <input type="email" class="form-control" id="email" name="email" placeholder="Email*"
+                            required="required" data-error="Требуется действительный email.">
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group form-input-box">
+                          <input type="text" class="form-control" name="subject" placeholder="Тема"
+                            required="required">
+                        </div>
+                      </div>
+                      <div class="col-12">
+                        <div class="form-group form-input-box">
+                          <textarea class="form-control" id="message" name="message" rows="7"
+                            placeholder="Ваше сообщение*" required="required"
+                            data-error="Пожалуйста, оставьте нам сообщение."></textarea>
+                          <div class="help-block with-errors"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <button type="submit" data-text="Отправить сообщение">Отправить сообщение</button>
+                      </div>
+                      <div class="messages">
+                        <div class="alert alert alert-success alert-dismissable alert-dismissable hidden"
+                          id="msgSubmit"><button type="button" class="close" data-dismiss="alert"
+                            aria-hidden="true">&times;</button> Спасибо! Ваше сообщение отправлено. </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Contact Section -->
+
+
+  </main><!-- End #main -->
+
+  <!--  Footer  -->
+  <footer id="footer" class="footer-section">
+
+    <div class="container">
+        <div class="footer-content pt-5 pb-5">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 mb-50">
+                    <div class="footer-widget">
+                        <div class="footer-logo">
+                            <a href="/" class="logo d-flex align-items-center">
+                              <img src="{{ url_for('static', path='images/logo.png') }}" alt="SMARTIO logo">
+                            </a>
+                        </div>
+                        <div class="footer-text">
+                            <p>SMARTIO - ваш надежный партнер для автоматизации бизнеса. Мы предоставляем комплексные решения для управления складом, онлайн-продажами и маркетплейсами, помогая вам достигать новых высот.</p>
+                        </div>
+                        <div class="footer-social-icon">
+                            <span>Подпишитесь на нас</span>
+                            <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href=""><i class="fab fa-linkedin-in"></i></a>
+                            <a href=""><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-sm-12 footer-column">
+                      <div class="service-widget footer-widget">
+                        <div class="footer-widget-heading">
+                            <h3>Услуги</h3>
+                        </div>
+                          <ul class="list">
+                              <li><a href="#services">Управление Складом</a></li>
+                              <li><a href="#services">Интернет-магазин</a></li>
+                              <li><a href="#services">Интеграция с Маркетплейсами</a></li>
+                              <li><a href="#services">SEO Оптимизация</a></li>
+                              <li><a href="#services">Отчетность и Аналитика</a></li>
+                              <li><a href="#services">Управление Персоналом</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-lg-2 col-md-6 col-sm-12 footer-column">
+                      <div class="service-widget footer-widget">
+                        <div class="footer-widget-heading">
+                            <h3>Информация</h3>
+                        </div>
+                          <ul class="list">
+                            <li><a href="#about">О нас</a></li>
+                            <li><a href="#pricing">Тарифы</a></li>
+                            <li><a href="#team">Команда</a></li>
+                            <li><a href="#portfolio">Портфолио</a></li>
+                            <li><a href="#faq">Вопросы</a></li>
+                            <li><a href="#team">Наши специалисты</a></li>
+                            <li><a href="#recent-posts">Блог</a></li>
+                            <li><a href="#our-plans">Наши Планы</a></li> {# Ссылка на секцию на этой же странице #}
+                            <li><a href="#contact">Связаться</a></li>
+                            <li><a href="#privacy-policy">Условия</a></li>
+                            <li><a href="#privacy-policy">Политика конфиденциальности</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                <div class="col-xl-4 col-lg-4 col-md-6 mb-50">
+                    <div class="contact-widget footer-widget">
+                        <div class="footer-widget-heading">
+                            <h3>Контакты</h3>
+                        </div>
+                          <div class="footer-text">
+                              <p><i class="fas fa-map-marker-alt mr-15"></i> Ваш адрес, Ваш город, Ваша страна</p>
+                              <p><i class="fas fa-phone-alt mr-15"></i> +1 1234 56 789</p>
+                              <p><i class="fas fa-envelope mr-15"></i> info@smartio.com</p>
+                          </div>
+                    </div>
+                    <div class="footer-widget">
+                        <div class="footer-widget-heading">
+                            <h3>Подписка</h3>
+                        </div>
+                        <div class="footer-text mb-25">
+                            <p>Не пропустите наши новости, заполните форму ниже.</p>
+                        </div>
+                        <div class="subscribe-form">
+                            <form action="#">
+                                <input type="text" placeholder="Ваш Email">
+                                <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-6 col-lg-6 text-left text-lg-left">
+                    <div class="copyright-text">
+                        <p>SMARTIO © 2024 - Разработано нашей командой</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center active">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{{ url_for('static', path='javascripts/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', path='vendor/glightbox/js/glightbox.min.js') }}"></script>
+  <script src="{{ url_for('static', path='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', path='vendor/aos/aos.js') }}"></script>
+  <script src="{{ url_for('static', path='vendor/swiper/swiper-bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/plugins.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/purecounter_vanilla.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/validator.min.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/contactform.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/particles.min.js') }}"></script>
+  <script src="{{ url_for('static', path='javascripts/script.js') }}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{{ url_for('static', path='javascripts/main.js') }}"></script>
+
+  <script>
+    // Функция для форматирования числа до двух знаков после запятой
+    function formatPrice(value) {
+        return value.toFixed(2);
+    }
+
+    // Инициализация цен при загрузке страницы (теперь просто для базовых цен)
+    document.addEventListener('DOMContentLoaded', function() {
+        // Если у вас есть динамические элементы, которые нужно инициализировать,
+        // они будут здесь. В данном случае, так как периоды удалены,
+        // эта секция может быть упрощена или удалена, если нет других динамических цен.
+        // Оставим для примера, если вдруг понадобятся другие JS-манипуляции с ценами.
+        document.querySelectorAll('.pricing .card .price h4').forEach(priceElement => {
+            const basePrice = parseFloat(priceElement.getAttribute('data-base-price'));
+            if (!isNaN(basePrice)) {
+                priceElement.innerHTML = `<sup>$</sup>${formatPrice(basePrice)}`;
+            }
+        });
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;0,600;1,700&amp;family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&amp;display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files (из smartio_platform_landing.html) -->
+    <link href="{{ url_for('static', path='vendor/aos/aos.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ url_for('static', path='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File (предполагаем, что у вас есть общий файл стилей) -->
+    <link href="{{ url_for('static', path='stylesheets/styles.css') }}" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .dashboard-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        .dashboard-card h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+            font-size: 2.5rem;
+        }
+        .dashboard-card p {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-card">
+        <h1 class="mb-4">Добро пожаловать, <span class="text-primary" id="displayUsername"></span>!</h1>
+        <p class="text-lg text-muted mb-3">Вы успешно вошли в систему SMARTIO.</p>
+        <p class="text-md text-muted mb-4">Ваша компания: <span class="font-weight-bold" id="displayCompanyName"></span></p>
+        <p class="text-md text-muted mb-4">Ваш тип подписки: <span class="font-weight-bold" id="displaySubscriptionType"></span></p>
+        <p class="text-md text-muted mb-4">Дата покупки подписки: <span class="font-weight-bold" id="displayPurchaseDate"></span></p>
+        <p class="text-md text-muted mb-4">Дата продления подписки: <span class="font-weight-bold" id="displayRenewalDate"></span></p>
+
+        <div class="d-grid gap-2 d-md-block mt-4">
+            <a href="/" class="btn btn-primary me-md-2">Вернуться на главную</a>
+            <button id="logoutButton" class="btn btn-danger">Выйти</button>
+        </div>
+    </div>
+
+    <!-- Vendor JS Files (из smartio_platform_landing.html) -->
+    <script src="{{ url_for('static', path='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const accessToken = localStorage.getItem('access_token');
+            if (!accessToken) {
+                // Если токена нет, перенаправляем на страницу входа
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                // Отправляем запрос на защищенный маршрут для получения данных пользователя
+                const response = await fetch('/api/client/me', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${accessToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('displayUsername').textContent = userData.username;
+                    document.getElementById('displayCompanyName').textContent = userData.company_name;
+
+                    if (userData.subscription_type) {
+                        document.getElementById('displaySubscriptionType').textContent = userData.subscription_type.name;
+                    } else {
+                        document.getElementById('displaySubscriptionType').textContent = 'Неизвестно';
+                    }
+
+                    // Форматирование дат
+                    const purchaseDate = new Date(userData.purchase_date);
+                    document.getElementById('displayPurchaseDate').textContent = purchaseDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+
+                    if (userData.renewal_date) {
+                        const renewalDate = new Date(userData.renewal_date);
+                        document.getElementById('displayRenewalDate').textContent = renewalDate.toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' });
+                    } else {
+                        document.getElementById('displayRenewalDate').textContent = 'Не установлено';
+                    }
+
+                } else if (response.status === 401) {
+                    // Токен недействителен или истек
+                    alert('Ваша сессия истекла. Пожалуйста, войдите снова.');
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                } else {
+                    alert('Не удалось загрузить данные пользователя.');
+                    console.error('Failed to fetch user data:', response.status, response.statusText);
+                    // В случае других ошибок, также можно перенаправить на логин или показать сообщение
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Ошибка сети при загрузке данных пользователя:', error);
+                alert('Произошла ошибка при загрузке данных. Пожалуйста, попробуйте позже.');
+                localStorage.removeItem('access_token');
+                window.location.href = '/login';
+            }
+
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                localStorage.removeItem('access_token');
+                window.location.href = '/login';
+            });
+        });
+    </script>
+</body>
+</html>

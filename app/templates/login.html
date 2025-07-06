@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <!-- Подключение Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Определение шрифта Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        /* Стили для кнопок социальных сетей */
+        .social-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px; /* Уменьшен padding */
+            border-radius: 9999px; /* Fully rounded */
+            font-weight: 600;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: 1px solid #e5e7eb; /* Light gray border */
+            color: #4b5563; /* Gray text */
+            flex-grow: 1; /* Позволяет кнопкам занимать доступное пространство */
+            min-width: 120px; /* Минимальная ширина для каждой кнопки */
+        }
+        .social-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .social-button img {
+            width: 20px; /* Уменьшен размер иконки */
+            height: 20px; /* Уменьшен размер иконки */
+            margin-right: 8px; /* Уменьшен отступ */
+        }
+        /* Дополнительные стили для прокручиваемой формы */
+        .scrollable-form-container {
+            max-height: 80vh; /* Максимальная высота для прокрутки */
+            overflow-y: auto; /* Включаем вертикальную прокрутку */
+            padding-right: 10px; /* Отступ для скроллбара */
+        }
+        /* Стилизация скроллбара (опционально, для WebKit браузеров) */
+        .scrollable-form-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .scrollable-form-container::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1; /* Цвет ползунка */
+            border-radius: 10px;
+        }
+        .scrollable-form-container::-webkit-scrollbar-track {
+            background-color: #f1f5f9; /* Цвет дорожки */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+
+    <!-- Контейнер с градиентным фоном, занимающий всю страницу -->
+    <div class="absolute inset-0 bg-gradient-to-r from-indigo-700 to-purple-600 flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center z-10">
+            <!-- Место для логотипа -->
+            <div class="mb-6">
+                <img src="{{ url_for('static', path='images/logo.png') }}" alt="SMARTIO logo" class="mx-auto h-16">
+            </div>
+
+            <h1 class="text-4xl font-bold text-gray-800 mb-6">Вход в <span class="text-indigo-600">SMARTIO</span></h1>
+            <p class="text-lg text-gray-600 mb-8">
+                Войдите в свой аккаунт, чтобы управлять вашим бизнесом.
+            </p>
+
+            <div class="scrollable-form-container">
+                <form id="loginForm" class="space-y-6">
+                    <div>
+                        <input type="text" id="username" name="username" placeholder="Имя пользователя" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                    </div>
+                    <div>
+                        <input type="password" id="password" name="password" placeholder="Пароль" required
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200">
+                    </div>
+                    <div id="errorMessage" class="text-red-600 text-sm hidden"></div>
+                    <button type="submit"
+                            class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-indigo-700 transition duration-300 transform hover:scale-105">
+                        Войти
+                    </button>
+                </form>
+
+                <p class="mt-4 text-gray-600 text-sm">
+                    <a href="/forgot-password" class="text-indigo-600 hover:underline">Забыли пароль?</a>
+                </p>
+
+                <div class="mt-8">
+                    <div class="flex flex-wrap justify-center gap-3"> <!-- Иконки в ряд, с отступами и переносом -->
+                        <a href="/auth/google" class="social-button bg-white hover:bg-gray-50">
+                            <img src="https://www.gstatic.com/images/branding/product/2x/google_fonts_24dp.png" alt="Google icon">
+                            <span>Google</span>
+                        </a>
+                        <a href="/auth/mailru" class="social-button bg-white hover:bg-gray-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Mail.ru_logo.svg/1200px-Mail.ru_logo.svg.png" alt="Mail.ru icon">
+                            <span>Mail.ru</span>
+                        </a>
+                        <a href="/auth/yandex" class="social-button bg-white hover:bg-gray-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Yandex_icon.svg/1200px-Yandex_icon.svg.png" alt="Yandex icon">
+                            <span>Yandex</span>
+                        </a>
+                        <a href="/auth/yahoo" class="social-button bg-white hover:bg-gray-50">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Yahoo%21_logo.svg/1200px-Yahoo%21_logo.svg.png" alt="Yahoo icon">
+                            <span>Yahoo</span>
+                        </a>
+                    </div>
+                </div>
+            </div> <!-- End scrollable-form-container -->
+
+            <p class="mt-8 text-gray-600">
+                Нет аккаунта? <a href="/register" class="text-indigo-600 hover:underline font-semibold">Зарегистрироваться</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Предотвращаем стандартную отправку формы
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessageDiv = document.getElementById('errorMessage');
+
+            errorMessageDiv.classList.add('hidden'); // Скрываем предыдущие ошибки
+            errorMessageDiv.textContent = '';
+
+            try {
+                const response = await fetch('/token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Сохраняем токен в localStorage
+                    localStorage.setItem('access_token', data.access_token);
+                    // Перенаправляем пользователя на защищенную страницу
+                    window.location.href = '/dashboard';
+                } else {
+                    const errorData = await response.json();
+                    errorMessageDiv.textContent = errorData.detail || 'Ошибка входа. Пожалуйста, проверьте данные.';
+                    errorMessageDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Ошибка сети или сервера:', error);
+                errorMessageDiv.textContent = 'Произошла ошибка. Пожалуйста, попробуйте позже.';
+                errorMessageDiv.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

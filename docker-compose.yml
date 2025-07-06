@@ -1,0 +1,53 @@
+# Определение сервисов (контейнеров)
+services:
+  # Сервис для базы данных платформы SMARTIO (на вашем сервере)
+  smartio_db:
+    container_name: smartio_platform_db_container
+    image: postgres:15-alpine
+    env_file:
+      - ./smartio.env
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - smartio_db_data:/var/lib/postgresql/data/pgdata
+    restart: always
+    networks:
+      - smartio_network
+    # Добавлен healthcheck для проверки готовности БД
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s # Увеличено время ожидания для полной инициализации БД
+
+  # Сервис для нашего FastAPI-приложения (бэкенд)
+  backend:
+    container_name: smartio_backend_container
+    build: .
+    # depends_on теперь будет ждать прохождения healthcheck
+    depends_on:
+      smartio_db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./smartio.env
+    environment: {}
+    volumes:
+      - .:/app
+    restart: always
+    networks:
+      - smartio_network
+
+# Определение томов для сохранения данных баз данных
+volumes:
+  smartio_db_data:
+
+# Определение общей сети для всех сервисов
+networks:
+  smartio_network:
+    driver: bridge
+
