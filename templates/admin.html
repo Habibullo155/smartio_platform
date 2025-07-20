@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&amp;display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS Files (из index.html) -->
+    <link href="{{ url_for('static', path='vendor/aos/aos.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ url_for('static', path='vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', path='vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', path='vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <!-- Main CSS File (предполагаем, что у вас есть общий файл стилей) -->
+    <link href="{{ url_for('static', path='stylesheets/styles.css') }}" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+        #sidebar {
+            width: 250px;
+            background-color: #343a40; /* Dark background */
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        #sidebar .nav-link {
+            color: #adb5bd; /* Lighter gray for links */
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        #sidebar .nav-link:hover, #sidebar .nav-link.active {
+            background-color: #495057;
+            color: white;
+        }
+        #main-content {
+            flex-grow: 1;
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+        .header-admin {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 30px;
+        }
+        .header-admin h1 {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+        }
+        .header-admin .user-info {
+            font-size: 1.1rem;
+            color: #555;
+        }
+        .header-admin .user-info strong {
+            color: #007bff;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .table-responsive {
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 12px 15px;
+        }
+        .table thead th {
+            background-color: #e9ecef;
+            color: #495057;
+            font-weight: 600;
+        }
+        .btn-action {
+            margin-right: 5px;
+            padding: 6px 10px;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+        .btn-add {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
+        }
+        .btn-add:hover {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+        .btn-edit:hover {
+            background-color: #e0a800;
+            border-color: #cc9a00;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        .form-section {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        .form-section h3 {
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #495057;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .modal-content {
+            border-radius: 10px;
+        }
+        .modal-header {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .modal-footer {
+            border-top: none;
+            padding-top: 0;
+        }
+        .alert-message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: 500;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        /* Стили для предпросмотра изображений/видео в модальных окнах */
+        .file-preview {
+            margin-top: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px;
+            background-color: #f8fafc;
+        }
+        .file-preview img, .file-preview video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            margin-bottom: 5px;
+        }
+        .file-preview p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="sidebar">
+        <h2 class="text-center mb-4">Админ-Панель</h2>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href="#" data-section="subscription-types">
+                    <i class="fas fa-tags me-2"></i> Типы Подписок
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-section="clients">
+                    <i class="fas fa-users me-2"></i> Клиенты
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-section="blog-posts">
+                    <i class="fas fa-blog me-2"></i> Блоги
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#" data-section="future-plans">
+                    <i class="fas fa-lightbulb me-2"></i> Будущие Планы
+                </a>
+            </li>
+        </ul>
+        <div class="mt-auto pt-3 border-top border-secondary">
+            <p class="text-muted mb-2">Вошли как: <strong id="displayAdminUsername">Загрузка...</strong></p>
+            <button id="logoutButton" class="btn btn-danger w-100"><i class="fas fa-sign-out-alt me-2"></i> Выйти</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="header-admin">
+            <h1>Управление SMARTIO</h1>
+            <div>
+                <a href="/static" class="btn btn-primary"><i class="fas fa-home me-2"></i> На главную</a>
+            </div>
+        </div>
+
+        <div id="content-area">
+            <!-- Динамический контент будет загружаться сюда -->
+            <!-- Секция Типы Подписок -->
+            <div id="subscription-types-section" class="section-content">
+                <h2 class="section-title">Управление Типами Подписок</h2>
+                <button type="button" class="btn btn-add mb-4" data-bs-toggle="modal" data-bs-target="#addSubscriptionTypeModal">
+                    <i class="fas fa-plus me-2"></i> Добавить новый тип подписки
+                </button>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Опции</th>
+                                <th>Цена</th>
+                                <th>Скидка</th>
+                                <th>Активен</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscriptionTypesTableBody">
+                            <!-- Данные типов подписок будут загружены сюда через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Секция Клиенты -->
+            <div id="clients-section" class="section-content hidden">
+                <h2 class="section-title">Управление Клиентами</h2>
+                <button type="button" class="btn btn-add mb-4" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                    <i class="fas fa-plus me-2"></i> Добавить нового клиента
+                </button>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Имя пользователя</th>
+                                <th>Компания</th>
+                                <th>Email</th>
+                                <th>Подписка</th>
+                                <th>Активен</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientsTableBody">
+                            <!-- Данные клиентов будут загружены сюда через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Секция Блоги -->
+            <div id="blog-posts-section" class="section-content hidden">
+                <h2 class="section-title">Управление Блогами</h2>
+                <button type="button" class="btn btn-add mb-4" data-bs-toggle="modal" data-bs-target="#addBlogPostModal">
+                    <i class="fas fa-plus me-2"></i> Добавить новую статью
+                </button>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Заголовок</th>
+                                <th>Автор</th>
+                                <th>Опубликовано</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="blogPostsTableBody">
+                            <!-- Данные блогов будут загружены сюда через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Секция Будущие Планы -->
+            <div id="future-plans-section" class="section-content hidden">
+                <h2 class="section-title">Управление Будущими Планами</h2>
+                <button type="button" class="btn btn-add mb-4" data-bs-toggle="modal" data-bs-target="#addFuturePlanModal">
+                    <i class="fas fa-plus me-2"></i> Добавить новый план
+                </button>
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Заголовок</th>
+                                <th>Категория</th>
+                                <th>Активен</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="futurePlansTableBody">
+                            <!-- Данные планов будут загружены сюда через JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals for Subscription Types -->
+    <!-- Add Subscription Type Modal -->
+    <div class="modal fade" id="addSubscriptionTypeModal" tabindex="-1" aria-labelledby="addSubscriptionTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSubscriptionTypeModalLabel">Добавить новый тип подписки</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addSubscriptionTypeForm">
+                        <div class="mb-3">
+                            <label for="newSubscriptionTypeName" class="form-label">Название</label>
+                            <input type="text" class="form-control" id="newSubscriptionTypeName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newSubscriptionTypeOptions" class="form-label">Опции (через запятую)</label>
+                            <input type="text" class="form-control" id="newSubscriptionTypeOptions">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newSubscriptionTypePrice" class="form-label">Цена</label>
+                            <input type="number" step="0.01" class="form-control" id="newSubscriptionTypePrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newSubscriptionTypeDiscount" class="form-label">Скидка (%)</label>
+                            <input type="number" step="0.01" class="form-control" id="newSubscriptionTypeDiscount" value="0">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newSubscriptionTypeIsActive" checked>
+                            <label class="form-check-label" for="newSubscriptionTypeIsActive">Активен</label>
+                        </div>
+                        <div id="addSubscriptionTypeMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Добавить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Subscription Type Modal -->
+    <div class="modal fade" id="editSubscriptionTypeModal" tabindex="-1" aria-labelledby="editSubscriptionTypeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSubscriptionTypeModalLabel">Редактировать тип подписки</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editSubscriptionTypeForm">
+                        <input type="hidden" id="editSubscriptionTypeId">
+                        <div class="mb-3">
+                            <label for="editSubscriptionTypeName" class="form-label">Название</label>
+                            <input type="text" class="form-control" id="editSubscriptionTypeName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubscriptionTypeOptions" class="form-label">Опции (через запятую)</label>
+                            <input type="text" class="form-control" id="editSubscriptionTypeOptions">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubscriptionTypePrice" class="form-label">Цена</label>
+                            <input type="number" step="0.01" class="form-control" id="editSubscriptionTypePrice" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editSubscriptionTypeDiscount" class="form-label">Скидка (%)</label>
+                            <input type="number" step="0.01" class="form-control" id="editSubscriptionTypeDiscount">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="editSubscriptionTypeIsActive">
+                            <label class="form-check-label" for="editSubscriptionTypeIsActive">Активен</label>
+                        </div>
+                        <div id="editSubscriptionTypeMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals for Blog Posts -->
+    <!-- Add Blog Post Modal -->
+    <div class="modal fade" id="addBlogPostModal" tabindex="-1" aria-labelledby="addBlogPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addBlogPostModalLabel">Добавить новую статью блога</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addBlogPostForm" enctype="multipart/form-data"> <!-- Добавлен enctype -->
+                        <div class="mb-3">
+                            <label for="newBlogPostTitle" class="form-label">Заголовок</label>
+                            <input type="text" class="form-control" id="newBlogPostTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBlogPostShortDescription" class="form-label">Краткое описание</label>
+                            <textarea class="form-control" id="newBlogPostShortDescription" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBlogPostContent" class="form-label">Содержание (HTML/Markdown)</label>
+                            <textarea class="form-control" id="newBlogPostContent" rows="10" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBlogPostImageFile" class="form-label">Файл изображения</label>
+                            <input type="file" class="form-control" id="newBlogPostImageFile" accept="image/*"> <!-- Изменено на type="file" -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBlogPostVideoFile" class="form-label">Файл видео</label>
+                            <input type="file" class="form-control" id="newBlogPostVideoFile" accept="video/*"> <!-- Изменено на type="file" -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="newBlogPostTags" class="form-label">Теги (через запятую)</label>
+                            <input type="text" class="form-control" id="newBlogPostTags">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newBlogPostIsPublished" checked>
+                            <label class="form-check-label" for="newBlogPostIsPublished">Опубликовано</label>
+                        </div>
+                        <div id="addBlogPostMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Добавить статью</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Blog Post Modal -->
+    <div class="modal fade" id="editBlogPostModal" tabindex="-1" aria-labelledby="editBlogPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editBlogPostModalLabel">Редактировать статью блога</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editBlogPostForm" enctype="multipart/form-data"> <!-- Добавлен enctype -->
+                        <input type="hidden" id="editBlogPostId">
+                        <div class="mb-3">
+                            <label for="editBlogPostTitle" class="form-label">Заголовок</label>
+                            <input type="text" class="form-control" id="editBlogPostTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBlogPostShortDescription" class="form-label">Краткое описание</label>
+                            <textarea class="form-control" id="editBlogPostShortDescription" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBlogPostContent" class="form-label">Содержание (HTML/Markdown)</label>
+                            <textarea class="form-control" id="editBlogPostContent" rows="10" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBlogPostImageFile" class="form-label">Файл изображения (оставьте пустым, чтобы не менять)</label>
+                            <input type="file" class="form-control" id="editBlogPostImageFile" accept="image/*"> <!-- Изменено на type="file" -->
+                            <div id="currentBlogPostImagePreview" class="mt-2 file-preview hidden"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBlogPostVideoFile" class="form-label">Файл видео (оставьте пустым, чтобы не менять)</label>
+                            <input type="file" class="form-control" id="editBlogPostVideoFile" accept="video/*"> <!-- Изменено на type="file" -->
+                            <div id="currentBlogPostVideoPreview" class="mt-2 file-preview hidden"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editBlogPostTags" class="form-label">Теги (через запятую)</label>
+                            <input type="text" class="form-control" id="editBlogPostTags">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="editBlogPostIsPublished">
+                            <label class="form-check-label" for="editBlogPostIsPublished">Опубликовано</label>
+                        </div>
+                        <div id="editBlogPostMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals for Clients -->
+    <!-- Add Client Modal -->
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addClientModalLabel">Добавить нового клиента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addClientForm">
+                        <div class="mb-3">
+                            <label for="newClientUsername" class="form-label">Имя пользователя</label>
+                            <input type="text" class="form-control" id="newClientUsername" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientPassword" class="form-label">Пароль</label>
+                            <input type="password" class="form-control" id="newClientPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientCompanyName" class="form-label">Название компании</label>
+                            <input type="text" class="form-control" id="newClientCompanyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientCompanyType" class="form-label">Тип компании</label>
+                            <select class="form-select" id="newClientCompanyType" required>
+                                <option value="">Выберите тип</option>
+                                <option value="ИП">ИП (Индивидуальный предприниматель)</option>
+                                <option value="ООО">ООО (Общество с ограниченной ответственностью)</option>
+                                <option value="Другое">Другое</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientINN" class="form-label">ИНН</label>
+                            <input type="text" class="form-control" id="newClientINN">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientContactEmail" class="form-label">Контактный Email</label>
+                            <input type="email" class="form-control" id="newClientContactEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientPhoneNumber" class="form-label">Номер телефона</label>
+                            <input type="text" class="form-control" id="newClientPhoneNumber">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newClientSubscriptionTypeId" class="form-label">Тип подписки</label>
+                            <select class="form-select" id="newClientSubscriptionTypeId" required>
+                                <!-- Options will be loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newClientIsActive" checked>
+                            <label class="form-check-label" for="newClientIsActive">Активен</label>
+                        </div>
+                        <div id="addClientMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Добавить клиента</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Client Modal -->
+    <div class="modal fade" id="editClientModal" tabindex="-1" aria-labelledby="editClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editClientModalLabel">Редактировать клиента</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editClientForm">
+                        <input type="hidden" id="editClientId">
+                        <div class="mb-3">
+                            <label for="editClientUsername" class="form-label">Имя пользователя</label>
+                            <input type="text" class="form-control" id="editClientUsername" required readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientPassword" class="form-label">Новый пароль (оставьте пустым, чтобы не менять)</label>
+                            <input type="password" class="form-control" id="editClientPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientCompanyName" class="form-label">Название компании</label>
+                            <input type="text" class="form-control" id="editClientCompanyName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientCompanyType" class="form-label">Тип компании</label>
+                            <select class="form-select" id="editClientCompanyType" required>
+                                <option value="ИП">ИП</option>
+                                <option value="ООО">ООО</option>
+                                <option value="Другое">Другое</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientINN" class="form-label">ИНН</label>
+                            <input type="text" class="form-control" id="editClientINN">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientContactEmail" class="form-label">Контактный Email</label>
+                            <input type="email" class="form-control" id="editClientContactEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientPhoneNumber" class="form-label">Номер телефона</label>
+                            <input type="text" class="form-control" id="editClientPhoneNumber">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClientSubscriptionTypeId" class="form-label">Тип подписки</label>
+                            <select class="form-select" id="editClientSubscriptionTypeId" required>
+                                <!-- Options will be loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="editClientIsActive">
+                            <label class="form-check-label" for="editClientIsActive">Активен</label>
+                        </div>
+                        <div id="editClientMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modals for Future Plans -->
+    <!-- Add Future Plan Modal -->
+    <div class="modal fade" id="addFuturePlanModal" tabindex="-1" aria-labelledby="addFuturePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFuturePlanModalLabel">Добавить новый будущий план</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addFuturePlanForm" enctype="multipart/form-data"> <!-- Добавлен enctype -->
+                        <div class="mb-3">
+                            <label for="newFuturePlanTitle" class="form-label">Заголовок</label>
+                            <input type="text" class="form-control" id="newFuturePlanTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanShortDescription" class="form-label">Краткое описание</label>
+                            <textarea class="form-control" id="newFuturePlanShortDescription" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanFullDescription" class="form-label">Полное описание</label>
+                            <textarea class="form-control" id="newFuturePlanFullDescription" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanImageFile" class="form-label">Файл изображения</label>
+                            <input type="file" class="form-control" id="newFuturePlanImageFile" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanVideoFile" class="form-label">Файл видео</label>
+                            <input type="file" class="form-control" id="newFuturePlanVideoFile" accept="video/*">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanTargetDate" class="form-label">Целевая дата</label>
+                            <input type="date" class="form-control" id="newFuturePlanTargetDate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanCategory" class="form-label">Категория</label>
+                            <input type="text" class="form-control" id="newFuturePlanCategory">
+                        </div>
+                        <div class="mb-3">
+                            <label for="newFuturePlanTags" class="form-label">Теги (через запятую)</label>
+                            <input type="text" class="form-control" id="newFuturePlanTags">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="newFuturePlanIsActive" checked>
+                            <label class="form-check-label" for="newFuturePlanIsActive">Активен</label>
+                        </div>
+                        <div id="addFuturePlanMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Добавить план</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Future Plan Modal -->
+    <div class="modal fade" id="editFuturePlanModal" tabindex="-1" aria-labelledby="editFuturePlanModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editFuturePlanModalLabel">Редактировать будущий план</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFuturePlanForm" enctype="multipart/form-data"> <!-- Добавлен enctype -->
+                        <input type="hidden" id="editFuturePlanId">
+                        <div class="mb-3">
+                            <label for="editFuturePlanTitle" class="form-label">Заголовок</label>
+                            <input type="text" class="form-control" id="editFuturePlanTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanShortDescription" class="form-label">Краткое описание</label>
+                            <textarea class="form-control" id="editFuturePlanShortDescription" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanFullDescription" class="form-label">Полное описание</label>
+                            <textarea class="form-control" id="editFuturePlanFullDescription" rows="5"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanImageFile" class="form-label">Файл изображения (оставьте пустым, чтобы не менять)</label>
+                            <input type="file" class="form-control" id="editFuturePlanImageFile" accept="image/*">
+                            <div id="currentFuturePlanImagePreview" class="mt-2 file-preview hidden"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanVideoFile" class="form-label">Файл видео (оставьте пустым, чтобы не менять)</label>
+                            <input type="file" class="form-control" id="editFuturePlanVideoFile" accept="video/*">
+                            <div id="currentFuturePlanVideoPreview" class="mt-2 file-preview hidden"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanTargetDate" class="form-label">Целевая дата</label>
+                            <input type="date" class="form-control" id="editFuturePlanTargetDate">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanCategory" class="form-label">Категория</label>
+                            <input type="text" class="form-control" id="editFuturePlanCategory">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editFuturePlanTags" class="form-label">Теги (через запятую)</label>
+                            <input type="text" class="form-control" id="editFuturePlanTags">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="editFuturePlanIsActive">
+                            <label class="form-check-label" for="editFuturePlanIsActive">Активен</label>
+                        </div>
+                        <div id="editFuturePlanMessage" class="alert-message hidden"></div>
+                        <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно подтверждения удаления -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Подтверждение удаления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmMessage">Вы уверены, что хотите удалить этот элемент?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteButton">Удалить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (bundle includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Глобальные переменные для элементов UI
+        const displayAdminUsername = document.getElementById('displayAdminUsername');
+        const logoutButton = document.getElementById('logoutButton');
+        const contentArea = document.getElementById('content-area');
+
+        // Элементы для сообщений
+        const alertMessageDiv = document.createElement('div');
+        alertMessageDiv.classList.add('alert-message', 'hidden', 'mb-3');
+        contentArea.prepend(alertMessageDiv); // Добавляем в начало content-area
+
+        // Секции контента
+        const sections = {
+            'subscription-types': document.getElementById('subscription-types-section'),
+            'clients': document.getElementById('clients-section'),
+            'blog-posts': document.getElementById('blog-posts-section'),
+            'future-plans': document.getElementById('future-plans-section')
+        };
+
+        // Таблицы
+        const subscriptionTypesTableBody = document.getElementById('subscriptionTypesTableBody');
+        const clientsTableBody = document.getElementById('clientsTableBody');
+        const blogPostsTableBody = document.getElementById('blogPostsTableBody');
+        const futurePlansTableBody = document.getElementById('futurePlansTableBody');
+
+        // Модальные окна Bootstrap (используем объекты Bootstrap Modal)
+        const addSubscriptionTypeModal = new bootstrap.Modal(document.getElementById('addSubscriptionTypeModal'));
+        const editSubscriptionTypeModal = new bootstrap.Modal(document.getElementById('editSubscriptionTypeModal'));
+        const addBlogPostModal = new bootstrap.Modal(document.getElementById('addBlogPostModal'));
+        const editBlogPostModal = new bootstrap.Modal(document.getElementById('editBlogPostModal'));
+        const addClientModal = new bootstrap.Modal(document.getElementById('addClientModal'));
+        const editClientModal = new bootstrap.Modal(document.getElementById('editClientModal'));
+        const addFuturePlanModal = new bootstrap.Modal(document.getElementById('addFuturePlanModal'));
+        const editFuturePlanModal = new bootstrap.Modal(document.getElementById('editFuturePlanModal'));
+        const confirmDeleteModal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+
+        // Формы
+        const addSubscriptionTypeForm = document.getElementById('addSubscriptionTypeForm');
+        const editSubscriptionTypeForm = document.getElementById('editSubscriptionTypeForm');
+        const addBlogPostForm = document.getElementById('addBlogPostForm');
+        const editBlogPostForm = document.getElementById('editBlogPostForm');
+        const addClientForm = document.getElementById('addClientForm');
+        const editClientForm = document.getElementById('editClientForm');
+        const addFuturePlanForm = document.getElementById('addFuturePlanForm');
+        const editFuturePlanForm = document.getElementById('editFuturePlanForm');
+        const confirmDeleteButton = document.getElementById('confirmDeleteButton');
+        const confirmMessage = document.getElementById('confirmMessage');
+
+        let currentDeleteEntity = null; // Для хранения типа сущности, которую нужно удалить
+        let currentDeleteId = null;     // Для хранения ID сущности, которую нужно удалить
+
+        // --- Вспомогательные функции UI ---
+        function showMessage(message, isError = false) {
+            alertMessageDiv.textContent = message;
+            alertMessageDiv.classList.remove('hidden', 'alert-success', 'alert-danger');
+            if (isError) {
+                alertMessageDiv.classList.add('alert-danger');
+            } else {
+                alertMessageDiv.classList.add('alert-success');
+            }
+            setTimeout(() => {
+                alertMessageDiv.classList.add('hidden');
+            }, 5000);
+        }
+
+        function switchSection(sectionName) {
+            // Скрываем все секции
+            for (const key in sections) {
+                sections[key].classList.add('hidden');
+            }
+
+            // Деактивируем все навигационные ссылки
+            document.querySelectorAll('#sidebar .nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Активируем нужную секцию и навигационную ссылку
+            sections[sectionName].classList.remove('hidden');
+            document.querySelector(`#sidebar .nav-link[data-section="${sectionName}"]`).classList.add('active');
+
+            // Загружаем данные для активной секции
+            if (sectionName === 'clients') {
+                loadClients();
+            } else if (sectionName === 'subscription-types') {
+                loadSubscriptionTypes();
+            } else if (sectionName === 'blog-posts') {
+                loadBlogPosts();
+            } else if (sectionName === 'future-plans') {
+                loadFuturePlans();
+            }
+        }
+
+        // --- Загрузка данных с аутентификацией ---
+        async function fetchWithAuth(url, options = {}) {
+            const token = localStorage.getItem('admin_access_token');
+            // console.log('DEBUG (fetchWithAuth): Токен из localStorage:', token ? token.substring(0, 10) + '...' : 'НЕТ ТОКЕНА'); // Логирование токена
+
+            if (!token) {
+                showMessage('Сессия истекла. Пожалуйста, войдите снова.', true);
+                setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+                return null;
+            }
+
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${token}`
+            };
+
+            const response = await fetch(url, options);
+
+            if (response.status === 401) {
+                console.error('DEBUG (fetchWithAuth): Получен 401 Unauthorized. Перенаправление на страницу входа.');
+                showMessage('Сессия истекла. Пожалуйста, войдите снова.', true);
+                localStorage.removeItem('admin_access_token');
+                setTimeout(() => { window.location.href = '/admin/login'; }, 1500);
+                return null;
+            }
+            return response;
+        }
+
+        async function loadAdminInfo() {
+            const response = await fetchWithAuth('/api/admin/me');
+            if (response && response.ok) {
+                const data = await response.json();
+                displayAdminUsername.textContent = data.username;
+            } else {
+                // Ошибка уже обработана в fetchWithAuth, если был 401
+                console.error('DEBUG (loadAdminInfo): Не удалось загрузить информацию об администраторе.');
+            }
+        }
+
+        // --- CRUD: Типы Подписок ---
+        async function loadSubscriptionTypes() {
+            const response = await fetchWithAuth('/api/admin/subscription_types/');
+            subscriptionTypesTableBody.innerHTML = ''; // Очищаем таблицу
+
+            if (response && response.ok) {
+                const types = await response.json();
+                types.forEach(type => {
+                    const row = subscriptionTypesTableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${type.id}</td>
+                        <td>${type.name}</td>
+                        <td>${type.options.join(', ')}</td>
+                        <td>$${type.price ? type.price.toFixed(2) : 'N/A'}</td>
+                        <td>${type.discount}%</td>
+                        <td>${type.is_active ? 'Да' : 'Нет'}</td>
+                        <td>
+                            <button class="btn btn-warning btn-action" onclick="editSubscriptionType(${type.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-action" onclick="confirmDelete('subscription-type', ${type.id})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                });
+            } else {
+                showMessage('Не удалось загрузить типы подписок.', true);
+            }
+        }
+
+        // Открытие модального окна редактирования типа подписки
+        async function editSubscriptionType(typeId) {
+            const response = await fetchWithAuth(`/api/admin/subscription_types/${typeId}`);
+            if (response && response.ok) {
+                const type = await response.json();
+                document.getElementById('editSubscriptionTypeId').value = type.id;
+                document.getElementById('editSubscriptionTypeName').value = type.name;
+                document.getElementById('editSubscriptionTypeOptions').value = type.options.join(', ');
+                document.getElementById('editSubscriptionTypePrice').value = type.price;
+                document.getElementById('editSubscriptionTypeDiscount').value = type.discount;
+                document.getElementById('editSubscriptionTypeIsActive').checked = type.is_active;
+                editSubscriptionTypeModal.show();
+            } else {
+                showMessage('Не удалось загрузить данные типа подписки для редактирования.', true);
+            }
+        }
+
+        // Обработчик формы добавления типа подписки
+        addSubscriptionTypeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('newSubscriptionTypeName').value,
+                options: document.getElementById('newSubscriptionTypeOptions').value.split(',').map(s => s.trim()).filter(s => s),
+                price: parseFloat(document.getElementById('newSubscriptionTypePrice').value),
+                discount: parseFloat(document.getElementById('newSubscriptionTypeDiscount').value),
+                is_active: document.getElementById('newSubscriptionTypeIsActive').checked
+            };
+
+            const response = await fetchWithAuth('/api/admin/subscription_types/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response && response.ok) {
+                showMessage('Тип подписки успешно добавлен.');
+                addSubscriptionTypeModal.hide();
+                addSubscriptionTypeForm.reset();
+                loadSubscriptionTypes();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка добавления типа подписки: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // Обработчик формы редактирования типа подписки
+        editSubscriptionTypeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const typeId = document.getElementById('editSubscriptionTypeId').value;
+            const formData = {
+                name: document.getElementById('editSubscriptionTypeName').value,
+                options: document.getElementById('editSubscriptionTypeOptions').value.split(',').map(s => s.trim()).filter(s => s),
+                price: parseFloat(document.getElementById('editSubscriptionTypePrice').value),
+                discount: parseFloat(document.getElementById('editSubscriptionTypeDiscount').value),
+                is_active: document.getElementById('editSubscriptionTypeIsActive').checked
+            };
+
+            const response = await fetchWithAuth(`/api/admin/subscription_types/${typeId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response && response.ok) {
+                showMessage('Тип подписки успешно обновлен.');
+                editSubscriptionTypeModal.hide();
+                loadSubscriptionTypes();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка обновления типа подписки: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // --- CRUD: Клиенты ---
+        async function loadClients() {
+            const response = await fetchWithAuth('/api/admin/clients/');
+            clientsTableBody.innerHTML = ''; // Очищаем таблицу
+
+            if (response && response.ok) {
+                const clients = await response.json();
+                clients.forEach(client => {
+                    const row = clientsTableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${client.id}</td>
+                        <td>${client.username}</td>
+                        <td>${client.company_name}</td>
+                        <td>${client.contact_email}</td>
+                        <td>${client.subscription_type ? client.subscription_type.name : 'N/A'}</td>
+                        <td>${client.is_active ? 'Да' : 'Нет'}</td>
+                        <td>
+                            <button class="btn btn-warning btn-action" onclick="editClient(${client.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-action" onclick="confirmDelete('client', ${client.id})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                });
+            } else {
+                showMessage('Не удалось загрузить клиентов.', true);
+            }
+        }
+
+        // Заполнение выпадающего списка типов подписок для форм клиентов
+        async function populateSubscriptionTypesDropdown(dropdownId, selectedId = null) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.innerHTML = '<option value="">Выберите тип подписки</option>';
+            const response = await fetchWithAuth('/api/admin/subscription_types/');
+            if (response && response.ok) {
+                const types = await response.json();
+                types.forEach(type => {
+                    const option = document.createElement('option');
+                    option.value = type.id;
+                    option.textContent = `${type.name} - $${type.price ? type.price.toFixed(2) : 'N/A'}`;
+                    dropdown.appendChild(option);
+                });
+                if (selectedId) {
+                    dropdown.value = selectedId;
+                }
+            } else {
+                showMessage('Не удалось загрузить типы подписок для выпадающего списка.', true);
+            }
+        }
+
+        // Открытие модального окна добавления клиента
+        document.querySelector('[data-bs-target="#addClientModal"]').addEventListener('click', async () => {
+            addClientForm.reset();
+            document.getElementById('newClientUsername').removeAttribute('readonly');
+            document.getElementById('newClientPassword').setAttribute('required', 'required');
+            document.getElementById('newClientIsActive').checked = true;
+            await populateSubscriptionTypesDropdown('newClientSubscriptionTypeId');
+        });
+
+        // Открытие модального окна редактирования клиента
+        async function editClient(clientId) {
+            const response = await fetchWithAuth(`/api/admin/clients/${clientId}`);
+            if (response && response.ok) {
+                const client = await response.json();
+                document.getElementById('editClientId').value = client.id;
+                document.getElementById('editClientUsername').value = client.username;
+                document.getElementById('editClientUsername').setAttribute('readonly', 'readonly'); // Имя пользователя нельзя менять
+                document.getElementById('editClientPassword').value = ''; // Пароль не отображается, но можно ввести новый
+                document.getElementById('editClientPassword').removeAttribute('required');
+                document.getElementById('editClientCompanyName').value = client.company_name;
+                document.getElementById('editClientCompanyType').value = client.company_type;
+                document.getElementById('editClientINN').value = client.inn || '';
+                document.getElementById('editClientContactEmail').value = client.contact_email;
+                document.getElementById('editClientPhoneNumber').value = client.phone_number || '';
+                document.getElementById('editClientIsActive').checked = client.is_active;
+                await populateSubscriptionTypesDropdown('editClientSubscriptionTypeId', client.subscription_type_id);
+                editClientModal.show();
+            } else {
+                showMessage('Не удалось загрузить данные клиента для редактирования.', true);
+            }
+        }
+
+        // Обработчик формы добавления клиента
+        addClientForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                username: document.getElementById('newClientUsername').value,
+                password: document.getElementById('newClientPassword').value,
+                company_name: document.getElementById('newClientCompanyName').value,
+                company_type: document.getElementById('newClientCompanyType').value,
+                inn: document.getElementById('newClientINN').value || null,
+                contact_email: document.getElementById('newClientContactEmail').value,
+                phone_number: document.getElementById('newClientPhoneNumber').value || null,
+                subscription_type_id: parseInt(document.getElementById('newClientSubscriptionTypeId').value),
+                is_active: document.getElementById('newClientIsActive').checked
+            };
+
+            const response = await fetchWithAuth('/api/admin/clients/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response && response.ok) {
+                showMessage('Клиент успешно добавлен.');
+                addClientModal.hide();
+                addClientForm.reset();
+                loadClients();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка добавления клиента: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // Обработчик формы редактирования клиента
+        editClientForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const clientId = document.getElementById('editClientId').value;
+            const formData = {
+                company_name: document.getElementById('editClientCompanyName').value,
+                company_type: document.getElementById('editClientCompanyType').value,
+                inn: document.getElementById('editClientINN').value || null,
+                contact_email: document.getElementById('editClientContactEmail').value,
+                phone_number: document.getElementById('editClientPhoneNumber').value || null,
+                subscription_type_id: parseInt(document.getElementById('editClientSubscriptionTypeId').value),
+                is_active: document.getElementById('editClientIsActive').checked
+            };
+            const password = document.getElementById('editClientPassword').value;
+            if (password) {
+                formData.password = password;
+            }
+
+            const response = await fetchWithAuth(`/api/admin/clients/${clientId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            if (response && response.ok) {
+                showMessage('Клиент успешно обновлен.');
+                editClientModal.hide();
+                loadClients();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка обновления клиента: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // --- CRUD: Блоги ---
+        async function loadBlogPosts() {
+            const response = await fetchWithAuth('/api/admin/blogs/');
+            blogPostsTableBody.innerHTML = '';
+
+            if (response && response.ok) {
+                const posts = await response.json();
+                posts.forEach(post => {
+                    const row = blogPostsTableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${post.id}</td>
+                        <td>${post.title}</td>
+                        <td>${post.author ? post.author.username : 'Неизвестно'}</td>
+                        <td>${post.is_published ? 'Да' : 'Нет'}</td>
+                        <td>
+                            <button class="btn btn-warning btn-action" onclick="editBlogPost(${post.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-action" onclick="confirmDelete('blog-post', ${post.id})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                });
+            } else {
+                showMessage('Не удалось загрузить статьи блога.', true);
+            }
+        }
+
+        // Открытие модального окна добавления статьи блога
+        document.querySelector('[data-bs-target="#addBlogPostModal"]').addEventListener('click', () => {
+            addBlogPostForm.reset();
+            document.getElementById('newBlogPostIsPublished').checked = false;
+            document.getElementById('currentBlogPostImagePreview').innerHTML = '';
+            document.getElementById('currentBlogPostImagePreview').classList.add('hidden');
+            document.getElementById('currentBlogPostVideoPreview').innerHTML = '';
+            document.getElementById('currentBlogPostVideoPreview').classList.add('hidden');
+        });
+
+        // Открытие модального окна редактирования статьи блога
+        async function editBlogPost(postId) {
+            const response = await fetchWithAuth(`/api/admin/blogs/${postId}`);
+            if (response && response.ok) {
+                const post = await response.json();
+                document.getElementById('editBlogPostId').value = post.id;
+                document.getElementById('editBlogPostTitle').value = post.title;
+                document.getElementById('editBlogPostShortDescription').value = post.short_description || '';
+                document.getElementById('editBlogPostContent').value = post.content;
+                document.getElementById('editBlogPostTags').value = post.tags.join(', ');
+                document.getElementById('editBlogPostIsPublished').checked = post.is_published;
+
+                const currentImagePreview = document.getElementById('currentBlogPostImagePreview');
+                currentImagePreview.innerHTML = '';
+                if (post.image_url) {
+                    currentImagePreview.classList.remove('hidden');
+                    currentImagePreview.innerHTML = `<p>Текущее изображение:</p><img src="${post.image_url}" alt="Текущее изображение" class="img-fluid">`;
+                } else {
+                    currentImagePreview.classList.add('hidden');
+                }
+
+                const currentVideoPreview = document.getElementById('currentBlogPostVideoPreview');
+                currentVideoPreview.innerHTML = '';
+                if (post.video_url) {
+                    currentVideoPreview.classList.remove('hidden');
+                    currentVideoPreview.innerHTML = `<p>Текущее видео:</p><video controls src="${post.video_url}" class="img-fluid"></video>`;
+                } else {
+                    currentVideoPreview.classList.add('hidden');
+                }
+                editBlogPostModal.show();
+            } else {
+                showMessage('Не удалось загрузить данные статьи блога для редактирования.', true);
+            }
+        }
+
+        // Обработчик формы добавления статьи блога
+        addBlogPostForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('newBlogPostTitle').value);
+            formData.append('short_description', document.getElementById('newBlogPostShortDescription').value);
+            formData.append('content', document.getElementById('newBlogPostContent').value);
+            formData.append('tags', document.getElementById('newBlogPostTags').value);
+            formData.append('is_published', document.getElementById('newBlogPostIsPublished').checked);
+
+            const imageFile = document.getElementById('newBlogPostImageFile').files[0];
+            if (imageFile) {
+                formData.append('image_file', imageFile);
+            }
+            const videoFile = document.getElementById('newBlogPostVideoFile').files[0];
+            if (videoFile) {
+                formData.append('video_file', videoFile);
+            }
+
+            const response = await fetchWithAuth('/api/admin/blogs/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response && response.ok) {
+                showMessage('Статья блога успешно добавлена.');
+                addBlogPostModal.hide();
+                addBlogPostForm.reset();
+                loadBlogPosts();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка добавления статьи блога: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // Обработчик формы редактирования статьи блога
+        editBlogPostForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const postId = document.getElementById('editBlogPostId').value;
+            const formData = new FormData();
+            formData.append('blog_id', postId); // Добавляем ID для маршрута
+            formData.append('title', document.getElementById('editBlogPostTitle').value);
+            formData.append('short_description', document.getElementById('editBlogPostShortDescription').value);
+            formData.append('content', document.getElementById('editBlogPostContent').value);
+            formData.append('tags', document.getElementById('editBlogPostTags').value);
+            formData.append('is_published', document.getElementById('editBlogPostIsPublished').checked);
+
+            const imageFile = document.getElementById('editBlogPostImageFile').files[0];
+            if (imageFile) {
+                formData.append('image_file', imageFile);
+            } else if (document.getElementById('editBlogPostImageFile').value === '' && !document.getElementById('currentBlogPostImagePreview').classList.contains('hidden')) {
+                // Если поле файла пустое, но был предпросмотр, значит пользователь хочет удалить изображение
+                formData.append('image_file', new File([], '')); // Отправляем пустой файл для очистки
+            }
+
+            const videoFile = document.getElementById('editBlogPostVideoFile').files[0];
+            if (videoFile) {
+                formData.append('video_file', videoFile);
+            } else if (document.getElementById('editBlogPostVideoFile').value === '' && !document.getElementById('currentBlogPostVideoPreview').classList.contains('hidden')) {
+                // Если поле файла пустое, но был предпросмотр, значит пользователь хочет удалить видео
+                formData.append('video_file', new File([], '')); // Отправляем пустой файл для очистки
+            }
+
+            const response = await fetchWithAuth(`/api/admin/blogs/${postId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response && response.ok) {
+                showMessage('Статья блога успешно обновлена.');
+                editBlogPostModal.hide();
+                loadBlogPosts();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка обновления статьи блога: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // --- CRUD: Будущие Планы ---
+        async function loadFuturePlans() {
+            const response = await fetchWithAuth('/api/admin/future_plans/');
+            futurePlansTableBody.innerHTML = '';
+
+            if (response && response.ok) {
+                const plans = await response.json();
+                plans.forEach(plan => {
+                    const row = futurePlansTableBody.insertRow();
+                    row.innerHTML = `
+                        <td>${plan.id}</td>
+                        <td>${plan.title}</td>
+                        <td>${plan.category || 'N/A'}</td>
+                        <td>${plan.is_active ? 'Да' : 'Нет'}</td>
+                        <td>
+                            <button class="btn btn-warning btn-action" onclick="editFuturePlan(${plan.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-action" onclick="confirmDelete('future-plan', ${plan.id})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    `;
+                });
+            } else {
+                showMessage('Не удалось загрузить будущие планы.', true);
+            }
+        }
+
+        // Открытие модального окна добавления будущего плана
+        document.querySelector('[data-bs-target="#addFuturePlanModal"]').addEventListener('click', () => {
+            addFuturePlanForm.reset();
+            document.getElementById('newFuturePlanIsActive').checked = true;
+            document.getElementById('newFuturePlanTargetDate').value = ''; // Очистка даты
+            document.getElementById('currentFuturePlanImagePreview').innerHTML = '';
+            document.getElementById('currentFuturePlanImagePreview').classList.add('hidden');
+            document.getElementById('currentFuturePlanVideoPreview').innerHTML = '';
+            document.getElementById('currentFuturePlanVideoPreview').classList.add('hidden');
+        });
+
+        // Открытие модального окна редактирования будущего плана
+        async function editFuturePlan(planId) {
+            const response = await fetchWithAuth(`/api/admin/future_plans/${planId}`);
+            if (response && response.ok) {
+                const plan = await response.json();
+                document.getElementById('editFuturePlanId').value = plan.id;
+                document.getElementById('editFuturePlanTitle').value = plan.title;
+                document.getElementById('editFuturePlanShortDescription').value = plan.short_description || '';
+                document.getElementById('editFuturePlanFullDescription').value = plan.full_description || '';
+                document.getElementById('editFuturePlanTargetDate').value = plan.target_date ? plan.target_date.substring(0, 10) : '';
+                document.getElementById('editFuturePlanCategory').value = plan.category || '';
+                document.getElementById('editFuturePlanTags').value = plan.tags.join(', ');
+                document.getElementById('editFuturePlanIsActive').checked = plan.is_active;
+
+                const currentImagePreview = document.getElementById('currentFuturePlanImagePreview');
+                currentImagePreview.innerHTML = '';
+                if (plan.image_url) {
+                    currentImagePreview.classList.remove('hidden');
+                    currentImagePreview.innerHTML = `<p>Текущее изображение:</p><img src="${plan.image_url}" alt="Текущее изображение" class="img-fluid">`;
+                } else {
+                    currentImagePreview.classList.add('hidden');
+                }
+
+                const currentVideoPreview = document.getElementById('currentFuturePlanVideoPreview');
+                currentVideoPreview.innerHTML = '';
+                if (plan.video_url) {
+                    currentVideoPreview.classList.remove('hidden');
+                    currentVideoPreview.innerHTML = `<p>Текущее видео:</p><video controls src="${plan.video_url}" class="img-fluid"></video>`;
+                } else {
+                    currentVideoPreview.classList.add('hidden');
+                }
+
+                editFuturePlanModal.show();
+            } else {
+                showMessage('Не удалось загрузить данные будущего плана для редактирования.', true);
+            }
+        }
+
+        // Обработчик формы добавления будущего плана
+        addFuturePlanForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData();
+            formData.append('title', document.getElementById('newFuturePlanTitle').value);
+            formData.append('short_description', document.getElementById('newFuturePlanShortDescription').value);
+            formData.append('full_description', document.getElementById('newFuturePlanFullDescription').value);
+            formData.append('category', document.getElementById('newFuturePlanCategory').value);
+            formData.append('is_active', document.getElementById('newFuturePlanIsActive').checked);
+            formData.append('tags', document.getElementById('newFuturePlanTags').value);
+            if (document.getElementById('newFuturePlanTargetDate').value) {
+                formData.append('target_date', document.getElementById('newFuturePlanTargetDate').value);
+            }
+
+            const imageFile = document.getElementById('newFuturePlanImageFile').files[0];
+            if (imageFile) {
+                formData.append('image_file', imageFile);
+            }
+            const videoFile = document.getElementById('newFuturePlanVideoFile').files[0];
+            if (videoFile) {
+                formData.append('video_file', videoFile);
+            }
+
+            const response = await fetchWithAuth('/api/admin/future_plans/', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response && response.ok) {
+                showMessage('Будущий план успешно добавлен.');
+                addFuturePlanModal.hide();
+                addFuturePlanForm.reset();
+                loadFuturePlans();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка добавления будущего плана: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // Обработчик формы редактирования будущего плана
+        editFuturePlanForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const planId = document.getElementById('editFuturePlanId').value;
+            const formData = new FormData();
+            formData.append('plan_id', planId); // Добавляем ID для маршрута
+            formData.append('title', document.getElementById('editFuturePlanTitle').value);
+            formData.append('short_description', document.getElementById('editFuturePlanShortDescription').value);
+            formData.append('full_description', document.getElementById('editFuturePlanFullDescription').value);
+            formData.append('category', document.getElementById('editFuturePlanCategory').value);
+            formData.append('is_active', document.getElementById('editFuturePlanIsActive').checked);
+            formData.append('tags', document.getElementById('editFuturePlanTags').value);
+            if (document.getElementById('editFuturePlanTargetDate').value) {
+                formData.append('target_date', document.getElementById('editFuturePlanTargetDate').value);
+            }
+
+            const imageFile = document.getElementById('editFuturePlanImageFile').files[0];
+            if (imageFile) {
+                formData.append('image_file', imageFile);
+            } else if (document.getElementById('editFuturePlanImageFile').value === '' && !document.getElementById('currentFuturePlanImagePreview').classList.contains('hidden')) {
+                formData.append('image_file', new File([], '')); // Отправляем пустой файл для очистки
+            }
+
+            const videoFile = document.getElementById('editFuturePlanVideoFile').files[0];
+            if (videoFile) {
+                formData.append('video_file', videoFile);
+            } else if (document.getElementById('editFuturePlanVideoFile').value === '' && !document.getElementById('currentFuturePlanVideoPreview').classList.contains('hidden')) {
+                formData.append('video_file', new File([], '')); // Отправляем пустой файл для очистки
+            }
+
+            const response = await fetchWithAuth(`/api/admin/future_plans/${planId}`, {
+                method: 'PUT',
+                body: formData
+            });
+
+            if (response && response.ok) {
+                showMessage('Будущий план успешно обновлен.');
+                editFuturePlanModal.hide();
+                loadFuturePlans();
+            } else {
+                const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                showMessage(`Ошибка обновления будущего плана: ${errorData.detail || 'Неизвестная ошибка.'}`, true);
+            }
+        });
+
+        // --- Подтверждение удаления ---
+        function confirmDelete(entity, id) {
+            currentDeleteEntity = entity;
+            currentDeleteId = id;
+            let entityName = '';
+            if (entity === 'client') entityName = 'клиента';
+            else if (entity === 'subscription-type') entityName = 'тип подписки';
+            else if (entity === 'blog-post') entityName = 'статью блога';
+            else if (entity === 'future-plan') entityName = 'будущий план';
+
+            confirmMessage.textContent = `Вы уверены, что хотите удалить ${entityName} с ID ${id}?`;
+            confirmDeleteModal.show();
+        }
+
+        confirmDeleteButton.addEventListener('click', async () => {
+            confirmDeleteModal.hide();
+            let url = '';
+            let successMessage = '';
+            let errorMessage = '';
+            let reloadFunction = null;
+
+            if (currentDeleteEntity === 'client') {
+                url = `/api/admin/clients/${currentDeleteId}`;
+                successMessage = 'Клиент успешно удален.';
+                errorMessage = 'Ошибка удаления клиента.';
+                reloadFunction = loadClients;
+            } else if (currentDeleteEntity === 'subscription-type') {
+                url = `/api/admin/subscription_types/${currentDeleteId}`;
+                successMessage = 'Тип подписки успешно удален.';
+                errorMessage = 'Ошибка удаления типа подписки.';
+                reloadFunction = loadSubscriptionTypes;
+            } else if (currentDeleteEntity === 'blog-post') {
+                url = `/api/admin/blogs/${currentDeleteId}`;
+                successMessage = 'Статья блога успешно удалена.';
+                errorMessage = 'Ошибка удаления статьи блога.';
+                reloadFunction = loadBlogPosts;
+            } else if (currentDeleteEntity === 'future-plan') {
+                url = `/api/admin/future_plans/${currentDeleteId}`;
+                successMessage = 'Будущий план успешно удален.';
+                errorMessage = 'Ошибка удаления будущего плана.';
+                reloadFunction = loadFuturePlans;
+            }
+
+            if (url) {
+                const response = await fetchWithAuth(url, { method: 'DELETE' });
+                if (response && response.ok) {
+                    showMessage(successMessage);
+                    if (reloadFunction) reloadFunction();
+                } else {
+                    const errorData = response ? await response.json() : { detail: 'Неизвестная ошибка.' };
+                    showMessage(`${errorMessage} ${errorData.detail || ''}`, true);
+                }
+            }
+        });
+
+        // --- Инициализация при загрузке страницы ---
+        document.addEventListener('DOMContentLoaded', async () => {
+            const currentAdminAccessToken = localStorage.getItem('admin_access_token');
+            // console.log('DEBUG (DOMContentLoaded): Токен при загрузке страницы:', currentAdminAccessToken ? currentAdminAccessToken.substring(0, 10) + '...' : 'НЕТ ТОКЕНА');
+
+            if (!currentAdminAccessToken) {
+                window.location.href = '/admin/login';
+                return; // Останавливаем выполнение, если токена нет
+            }
+
+            await loadAdminInfo(); // Пытаемся загрузить информацию об администраторе
+
+            // Инициализируем первую вкладку (Типы Подписок)
+            switchSection('subscription-types');
+
+            // Обработчики переключения вкладок
+            document.querySelectorAll('#sidebar .nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    switchSection(e.target.dataset.section);
+                });
+            });
+
+            // Обработчик кнопки выхода
+            logoutButton.addEventListener('click', () => {
+                localStorage.removeItem('admin_access_token');
+                window.location.href = '/admin/login';
+            });
+        });
+    </script>
+</body>
+</html>

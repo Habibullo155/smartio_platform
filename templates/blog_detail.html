@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ blog.title }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blogs">Blog</a></li>
+                <li><a href="/future-plans">Our Future Plans</a></li>
+                <li><a href="/client/login">Client Login</a></li>
+                <li><a href="/admin/login">Admin Login</a></li>
+            </ul>
+        </nav>
+
+        <h1>{{ blog.title }}</h1>
+        {% if blog.image_url %}
+            <img src="{{ blog.image_url }}" alt="{{ blog.title }}" style="max-width: 100%; height: auto;"><br>
+        {% endif %}
+        <p><strong>Short Description:</strong> {{ blog.short_description }}</p>
+        <p><strong>Category:</strong> {{ blog.category.name if blog.category else 'Uncategorized' }}</p>
+        <hr>
+        <div>
+            {{ blog.full_description | safe }} {# | safe - если описание может содержать HTML #}
+        </div>
+        <hr>
+        <small>Published: {{ blog.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+        <br><br>
+        <a href="/blogs">Back to all blogs</a>
+    </div>
+</body>
+</html>

@@ -4,7 +4,7 @@ $(function () {
     $('#ajax-contact').validator();
     $('#ajax-contact').on('submit', function (e) {
         if (!e.isDefaultPrevented()) {
-            var url = "assets/phpscripts/contact.php";
+            var url = "static/phpscripts/contact.php";
             $.ajax({
                 type: "POST",
                 url: url,

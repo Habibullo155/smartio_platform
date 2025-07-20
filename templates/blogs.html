@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Our Super Project!</h1>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blogs">Blog</a></li>
+                <li><a href="/future-plans">Our Future Plans</a></li>
+                <li><a href="/client/login">Client Login</a></li>
+                <li><a href="/admin/login">Admin Login</a></li>
+            </ul>
+        </nav>
+
+        <h2>Latest Blog Posts</h2>
+        {% if latest_blogs %}
+            <div class="blog-list">
+                {% for blog in latest_blogs %}
+                    <div class="blog-card">
+                        {% if blog.image_url %}
+                            <img src="{{ blog.image_url }}" alt="{{ blog.title }}" style="width:100px; height:auto;">
+                        {% endif %}
+                        <h3><a href="/blogs/{{ blog.id }}">{{ blog.title }}</a></h3>
+                        <p>{{ blog.short_description }}</p>
+                        <small>Published: {{ blog.created_at.strftime('%Y-%m-%d') }}</small>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No blog posts yet.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

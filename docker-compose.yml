@@ -1,53 +1,40 @@
-# Определение сервисов (контейнеров)
+#version: '3.8'
+
 services:
-  # Сервис для базы данных платформы SMARTIO (на вашем сервере)
-  smartio_db:
-    container_name: smartio_platform_db_container
-    image: postgres:15-alpine
-    env_file:
-      - ./smartio.env
-    environment:
-      PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - "5432:5432"
+  db:
+    image: postgres:16-alpine # Используем легкий образ PostgreSQL
     volumes:
-      - smartio_db_data:/var/lib/postgresql/data/pgdata
-    restart: always
-    networks:
-      - smartio_network
-    # Добавлен healthcheck для проверки готовности БД
-    healthcheck:
+      - postgres_data:/var/lib/postgresql/data/ # Сохраняем данные БД на хосте
+    environment:
+      POSTGRES_DB: ${DB_NAME}       # Название БД из .env
+      POSTGRES_USER: ${DB_USER}     # Пользователь БД из .env
+      POSTGRES_PASSWORD: ${DB_PASSWORD} # Пароль БД из .env
+    ports:
+      - "5432:5432" # Прокидываем порт PostgreSQL на хост (опционально, но удобно для DBeaver)
+    healthcheck: # Проверка готовности БД
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
       timeout: 5s
       retries: 5
-      start_period: 30s # Увеличено время ожидания для полной инициализации БД
 
-  # Сервис для нашего FastAPI-приложения (бэкенд)
-  backend:
-    container_name: smartio_backend_container
-    build: .
-    # depends_on теперь будет ждать прохождения healthcheck
-    depends_on:
-      smartio_db:
-        condition: service_healthy
+  app:
+    build: . # Собираем образ из текущей директории (используя Dockerfile)
     ports:
-      - "8000:8000"
-    env_file:
-      - ./smartio.env
-    environment: {}
+      - "8000:8000" # Прокидываем порт FastAPI на хост
     volumes:
-      - .:/app
-    restart: always
-    networks:
-      - smartio_network
+      - .:/app # Монтируем текущую директорию в контейнер, удобно для разработки
+      - static_data:/app/static # Выделяем том для статических файлов, включая uploads
+    env_file:
+      - ./.env # Передаем переменные окружения из .env файла
+    depends_on:
+      db:
+        condition: service_healthy # Запускаем приложение только после того, как БД будет готова
+    command: >
+      /bin/sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+      # --reload используется для разработки. В продакшене лучше убрать.
+      # Выполняем миграции Alembic перед запуском приложения
+      # `alembic upgrade head` должен быть частью `command`, чтобы он запускался внутри контейнера
 
-# Определение томов для сохранения данных баз данных
 volumes:
-  smartio_db_data:
-
-# Определение общей сети для всех сервисов
-networks:
-  smartio_network:
-    driver: bridge
-
+  postgres_data: # Объявление тома для данных PostgreSQL
+  static_data: # Объявление тома для статических файлов (чтобы они сохранялись при пересборке)

@@ -1,64 +1,61 @@
-# create_admin.py
 import asyncio
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.database import engine, Base, AsyncSessionLocal
+from app.models.smartio_models import AdminUser
+from app.core.security import get_password_hash # Мы добавим эту функцию позже в security.py
 import os
 from dotenv import load_dotenv
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
-# Загружаем переменные окружения из файла .env
-load_dotenv()
+# Загружаем переменные окружения, чтобы скрипт мог подключиться к БД
+load_dotenv(os.path.join(os.path.dirname(__file__), 'smartio.env'))
 
-# Импортируем необходимые функции и модели
-from app.database import AsyncSessionLocalSmartio, create_smartio_db_tables, \
-    engine_smartio  # Импортируем engine_smartio
-from app.crud.smartio_crud import create_admin_user, get_admin_user_by_username
-from app.schemas.smartio_schemas import AdminUserCreate
-from app.core.security import get_password_hash
-
-
-async def initialize_and_create_admin():
+async def init_db():
     """
-    Создает таблицы БД и первого администратора, если его еще нет,
-    в рамках одного асинхронного контекста.
+    Создает все таблицы в базе данных, если их нет.
+    ОСТОРОЖНО: Это удалит и пересоздаст таблицы, если они существуют,
+    если не использовать Alembic. Для первого запуска ок, но не для продакшена.
     """
-    print("Инициализация базы данных и создание первого администратора...")
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("Все таблицы созданы или обновлены.")
 
-    # 1. Создаем таблицы БД
-    # Используем engine_smartio.begin() для создания таблиц,
-    # чтобы убедиться, что это происходит в рамках активного соединения.
-    async with engine_smartio.begin() as conn:
-        await conn.run_sync(SmartioBase.metadata.create_all)  # Используем SmartioBase из database.py
-    print("Таблицы SMARTIO DB созданы или уже существуют.")
-
-    # 2. Создаем первого администратора
-    admin_username = os.getenv("ADMIN_USERNAME", "admin")
-    admin_password = os.getenv("ADMIN_PASSWORD", "adminpass")  # Используйте надежный пароль в .env!
-    admin_email = os.getenv("ADMIN_EMAIL", "admin@smartio.com")
-
-    async with AsyncSessionLocalSmartio() as db:
-        existing_admin = await get_admin_user_by_username(db, admin_username)
-        if existing_admin:
-            print(f"Администратор с именем '{admin_username}' уже существует.")
+async def create_initial_admin_user():
+    """
+    Создает первого администратора по умолчанию.
+    """
+    db: AsyncSession = AsyncSessionLocal()
+    try:
+        # Проверяем, существует ли уже админ с таким именем пользователя
+        existing_admin = await db.get(AdminUser, 1) # Попробуем получить первого админа по ID
+        if existing_admin and existing_admin.username == "admin":
+            print("Администратор 'admin' уже существует.")
             return
 
-        print(f"Создание первого администратора: {admin_username}...")
-        hashed_password = get_password_hash(admin_password)
-        admin_data = AdminUserCreate(
-            username=admin_username,
-            password=admin_password,  # Пароль будет захэширован в create_admin_user
-            email=admin_email,
-            is_superadmin=True  # Первый админ будет суперадмином
-        )
-        new_admin = await create_admin_user(db, admin_data, hashed_password)
-        print(f"Администратор '{new_admin.username}' успешно создан с ID: {new_admin.id}")
+        # Если админа нет, создаем его
+        # ВАЖНО: Замени "secure_admin_password" на сильный пароль
+        hashed_password = get_password_hash("secure_admin_password") # Эта функция еще не реализована, но мы скоро ее сделаем
 
+        admin = AdminUser(
+            username="admin",
+            hashed_password=hashed_password,
+            email="admin@smartio.com",
+            full_name="Главный Администратор",
+            is_active=True,
+            is_superuser=True
+        )
+        db.add(admin)
+        await db.commit()
+        await db.refresh(admin) # Обновляем объект, чтобы получить id
+        print(f"Администратор '{admin.username}' создан успешно с ID: {admin.id}.")
+    except Exception as e:
+        await db.rollback()
+        print(f"Ошибка при создании администратора: {e}")
+    finally:
+        await db.close()
+
+async def main():
+    await init_db()
+    await create_initial_admin_user()
 
 if __name__ == "__main__":
-    # Импортируем SmartioBase здесь, чтобы избежать циклического импорта
-    # если database.py импортирует модели, а модели импортируют Base.
-    # Это временное решение, лучше вынести Base в отдельный файл.
-    from app.models.smartio_models import Base as SmartioBase
-
-    asyncio.run(initialize_and_create_admin())
-    print("Скрипт create_admin.py завершен.")
-
+    asyncio.run(main())

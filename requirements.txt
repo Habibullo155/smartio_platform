@@ -1,7 +1,7 @@
 fastapi==0.115.0 # Убедись, что версия актуальна
 uvicorn==0.30.1 # ASGI сервер для FastAPI
 SQLAlchemy==2.0.30 # ORM для работы с базами данных
-psycopg2-binary # Адаптер для PostgreSQL (может понадобиться для некоторых инструментов, но для async SQLAlchemy нужен asyncpg)
+psycopg2-binary==2.9.9 # Адаптер для PostgreSQL (может понадобиться для некоторых инструментов, но для async SQLAlchemy нужен asyncpg)
 asyncpg==0.29.0 # Асинхронный драйвер для PostgreSQL - ДОБАВЛЕНО!
 Jinja2==3.1.4 # Шаблонизатор
 python-dotenv==1.1.0 # Для загрузки переменных окружения (например, строки подключения к БД)
@@ -10,7 +10,10 @@ bcrypt==3.2.0
 python-jose[cryptography]==3.5.0 # Для JWT аутентификации
 pydantic[email]
 authlib
+alembic
+pyjwt
 httpx
 aiofiles
+pillow
 python-multipart
 python-dateutil==2.9.0.post0 # Для работы с датами, если понадобится более сложная логика, например для renewal_date

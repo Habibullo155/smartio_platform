@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome, Admin {{ user.email }}!</h1>
+        <p>This is your administrative dashboard.</p>
+        <nav>
+            <ul>
+                <li><a href="/docs">Swagger UI (API Docs)</a></li>
+                <li><a href="/admin/blog/">Manage Blog</a></li>
+                <li><a href="/admin/subscriptions/">Manage Subscriptions</a></li>
+                <li><a href="/admin/clients/">Manage Clients</a></li>
+                <li><a href="/admin/future-plans/">Manage Future Plans</a></li>
+                </ul>
+        </nav>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        function logout() {
+            // Удаление куки с токеном
+            document.cookie = "admin_access_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; samesite=Lax";
+            window.location.href = "/admin/login";
+        }
+    </script>
+</body>
+</html>
